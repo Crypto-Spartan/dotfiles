@@ -1,0 +1,32 @@
+[user]
+    name = Crypto-Spartan
+    email = accounts@cryptospartan.net
+
+[init]
+    defaultBranch = main
+
+[core]
+    autocrlf = input
+    eol = lf
+    attributesfile = ~/.gitattributes
+    pager = delta
+
+[pull]
+    ff = only
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # use n & N to move between diff sections
+    dark = true
+    line-numbers = true
+    commit-decoration-style = bold yellow box ul
+    file-style = bold yellow ul
+    hunk-header-decoration-style = yellow box
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
