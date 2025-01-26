@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+
+alias ls='eza --color=always'
+alias ll='el'       # all files in long format
+alias la='ela'      # all files in long format, excluding . & ..
+
+export EXA_COLORS='da=38;5;213'
+
+# -a: all files
+# -h: add header row
+# -l: long format
+# -m: use the modified timestamp field
+# -F: file-type indicators (i.e. directory/, executable*)
+# -G: grid format
+# -H: show # of hard links
+# -T: tree format
+# -L: limit depths of recursion
+alias el='eza -hlm -F --color=always'
+alias ela='eza -ahlm -F --color=always'
+alias et='eza -hlmT -F -L 2 --color=always'
+alias eta='eza -ahlmT -F -L 2 --color=always --ignore-glob=".git|.memestra"'
+alias eza='eza -m'
+
+
+# aliases for git
+alias gs='git status'
+alias gd='git diff'
+alias ga='git add'
+alias gc='git commit -m'
+alias gl="git log --graph --relative-date --pretty='%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,cyan)%>(12,trunc)%ad %C(auto,green)%<(15,trunc)%aN %C(auto,reset)%s%C(auto,red)% gD% D' --color=always"
+alias gpsh='git push'
+alias gu='git reset HEAD~'  # "git undo"
+alias lg='lazygit'
+
+alias cd='z'
+alias -- -='z -'
+
+# use bat instead of less
+#alias less="BAT_PAGER='less -RM +Gg' bat"
+
+# always enable colored `grep` output
+# note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
+
+#alias zam='zellij attach main'
+
+# 'nvim server loop/listen'
+alias nsl='while true; do nvim . --headless --listen localhost:<PORT>; done'
+# 'netcat listen'
+alias ncl='nc -lkU /tmp/log.sock'
+
+# enable aliases to be sudo'ed
+alias sudo='sudo '
+
+# URL-encode strings
+alias urlencode='python -c "import sys, urllib as ul; print(ul.quote_plus(sys.argv[1]));'
+
+# intuitive map function
+# for example, to list all dirextories that contain a certain file:
+# find . -name .gitattributes | map dirname
+alias map='xargs -n1'
+
+# reload shell (i.e. invoke as a login shell)
+alias reload='exec ${SHELL} -l'
+
+# print each PATH entry on a separate line
+alias path='echo -e ${PATH//:/\\n}'
