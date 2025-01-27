@@ -1,0 +1,6 @@
+require('config.custom_fn')
+require('config.options')
+require('config.keymaps')
+require('config.autocommands')
+require('config.lazy_events')
+require('config.lazy')
