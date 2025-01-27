@@ -29,7 +29,7 @@ if [ ! -S ~/.ssh/ssh_auth_sock ]; then
     ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
 export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
-export SSH_AGENT_PID="$(ps -ef | grep ssh-agent | grep -v grep | awk '{print $2}')"
+export SSH_AGENT_PID="$(pgrep ssh-agent)"
 
 exit_session() {
     . "$HOME/.bash_logout"
