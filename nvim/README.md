@@ -1,9 +1,8 @@
 # CryptoSpartan's nvim config
 
-<a href="https://dotfyle.com/Crypto-Spartan/nvim"><img src="https://dotfyle.com/Crypto-Spartan/nvim/badges/plugins?style=for-the-badge" /></a>
-<a href="https://dotfyle.com/Crypto-Spartan/nvim"><img src="https://dotfyle.com/Crypto-Spartan/nvim/badges/leaderkey?style=for-the-badge" /></a>
-<a href="https://dotfyle.com/Crypto-Spartan/nvim"><img src="https://dotfyle.com/Crypto-Spartan/nvim/badges/plugin-manager?style=for-the-badge" /></a>
-
+<a href="https://dotfyle.com/Crypto-Spartan/dotfiles-nvim"><img src="https://dotfyle.com/Crypto-Spartan/dotfiles-nvim/badges/plugins?style=for-the-badge" /></a>
+<a href="https://dotfyle.com/Crypto-Spartan/dotfiles-nvim"><img src="https://dotfyle.com/Crypto-Spartan/dotfiles-nvim/badges/leaderkey?style=for-the-badge" /></a>
+<a href="https://dotfyle.com/Crypto-Spartan/dotfiles-nvim"><img src="https://dotfyle.com/Crypto-Spartan/dotfiles-nvim/badges/plugin-manager?style=for-the-badge" /></a>
 
 ## Install Instructions
 
