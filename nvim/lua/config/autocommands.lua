@@ -15,7 +15,9 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePre' }, {
     group = vim.api.nvim_create_augroup('SetFileformat', { clear = true }),
     desc = 'Always set fileformat to unix',
     callback = function()
-        vim.bo.fileformat = 'unix'
+        if vim.bo.modifiable then
+            vim.bo.fileformat = 'unix'
+        end
     end
 })
 
