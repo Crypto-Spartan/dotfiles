@@ -24,7 +24,7 @@ for file in ~/.dotfiles/.{aliases,exports,}; do
 done;
 unset file;
 
-if [[ ! -S ~/.ssh/ssh_auth_sock ]]; then
+if [ ! -S ~/.ssh/ssh_auth_sock ]; then
     eval $(ssh-agent -t 30m -s)
     ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
