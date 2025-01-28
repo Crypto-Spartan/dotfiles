@@ -48,4 +48,12 @@ vim.custom_fn = {
     get_buf_cwd = function()
         return vim.fn.expand('%:p:h')
     end,
+
+    get_nvim_cwd_oil_trimmed = function()
+        return vim.custom_fn.trim_oil_path(vim.custom_fn.get_nvim_cwd())
+    end,
+
+    get_buf_cwd_oil_trimmed = function()
+        return vim.custom_fn.trim_oil_path(vim.custom_fn.get_buf_cwd())
+    end,
 }
