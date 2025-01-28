@@ -99,6 +99,11 @@ for file in ~/.dotfiles/.{aliases,}; do
 done
 unset file
 
+exit_session() {
+    . "$HOME/.zsh_logout"
+}
+trap exit_session EXIT SIGHUP SIGINT SIGQUIT SIGABRT SIGKILL SIGALRM SIGTERM
+
 
 # User configuration
 

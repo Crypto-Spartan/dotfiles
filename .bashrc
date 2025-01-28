@@ -11,6 +11,7 @@ PS1='[\u@\h \W]\$ '
 ln -sf .dotfiles/.bash_logout
 ln -sf .dotfiles/.bash_profile
 ln -sf .dotfiles/.bashrc
+ln -sf .dotfiles/.zsh_logout
 ln -sf .dotfiles/.zshrc
 # renamed
 ln -sf .dotfiles/.gitattributes_global ./.gitattributes
@@ -36,7 +37,5 @@ export SSH_AGENT_PID="$(pgrep ssh-agent)"
 exit_session() {
     . "$HOME/.bash_logout"
 }
-trap exit_session EXIT
-trap exit_session SIGHUP
-
+trap exit_session EXIT SIGHUP SIGINT SIGQUIT SIGABRT SIGKILL SIGALRM SIGTERM
 eval "$(zoxide init bash)"
