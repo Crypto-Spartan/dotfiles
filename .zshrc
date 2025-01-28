@@ -21,12 +21,12 @@ ZSH_THEME="robbyrussell"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
 # zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
-# zstyle ':omz:update' mode reminder  # just remind me to update when it's time
+zstyle :omz:update mode reminder  # just remind me to update when it's time
 
 # Uncomment the following line to change how often to auto-update (in days).
 # zstyle ':omz:update' frequency 13
@@ -65,14 +65,40 @@ ZSH_THEME="robbyrussell"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+for file in ~/.dotfiles/.{exports}; do
+    [ -r $file ] && [ -f $file ] && source $file
+done
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git rust zoxide)
+plugins=(alias-finder aliases command-not-found copybuffer copyfile copypath encode64 eza genpass git-commit isodate nmap pip procs python rsync rust safe-paste ssh ssh-agent systemd thefuck timer vi-mode virtualenv zoxide)
+
+# alias-finder
+zstyle :omz:plugins:alias-finder autoload yes
+
+# eza
+zstyle :omz:plugins:eza git-status yes
+zstyle :omz:plugins:eza header     yes
+zstyle :omz:plugins:eza icons      yes
+zstyle :omz:plugins:eza show-group no
+
+# ssh-agent
+zstyle :omz:plugins:ssh-agent lifetime 1h
+zstyle :omz:plugins:ssh-agent lazy     yes
 
 source $ZSH/oh-my-zsh.sh
+
+alias -- -='z -'
+alias aliases='als'
+
+for file in ~/.dotfiles/.{aliases,}; do
+    [ -r $file ] && [ -f $file ] && source $file
+done
+unset file
+
 
 # User configuration
 
