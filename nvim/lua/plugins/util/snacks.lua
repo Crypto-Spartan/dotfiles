@@ -61,7 +61,30 @@ return {
     keys = {
         { '<leader>bd',  function() Snacks.bufdelete() end,        desc = 'Delete Buffer' },
         { '<leader>gb',  function() Snacks.git.blame_line() end,   desc = 'Git Blame Line' },
-        { '<leader>gg',  function() Snacks.lazygit() end,          desc = 'Lazygit' },
+        {
+            '<leader>gg',
+            desc = 'Lazygit',
+            function()
+                local current_dir = vim.custom_fn.get_buf_cwd_oil_trimmed()
+                local _, git_dir = next(vim.fs.find('.git', {
+                    path = current_dir,
+                    upward = true,
+                    type = 'directory',
+                }))
+                -- local _, git_dir = next(git_dirs)
+                -- vim.print(git_dir)
+                if git_dir == nil or git_dir:len() == 0 then
+                    vim.notify('Unable to open LazyGit, not in a git directory', vim.log.levels.WARN, {
+                        title = 'LazyGit Warning',
+                        timeout = 2500,
+                    })
+                    return
+                end
+                Snacks.lazygit({
+                    args = { '-p', vim.fs.dirname(git_dir) }
+                })
+            end,
+        },
         { '<leader>gf',  function() Snacks.lazygit.log_file() end, desc = 'Lazygit Current File History' },
         { '<leader>gl',  function() Snacks.lazygit.log() end,      desc = 'Lazygit Log (cwd)' },
         { '<leader>tps', function() Snacks.profiler.scratch() end, desc = 'Profiler Scratch Buffer' },
