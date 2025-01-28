@@ -11,6 +11,8 @@ PS1='[\u@\h \W]\$ '
 ln -sf .dotfiles/.bash_logout
 ln -sf .dotfiles/.bash_profile
 ln -sf .dotfiles/.bashrc
+ln -sf .dotfiles/.zshrc
+# renamed
 ln -sf .dotfiles/.gitattributes_global ./.gitattributes
 ln -sf .dotfiles/.gitconfig_global ./.gitconfig
 
