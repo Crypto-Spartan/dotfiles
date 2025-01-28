@@ -15,9 +15,9 @@ ln -sf .dotfiles/.gitattributes_global ./.gitattributes
 ln -sf .dotfiles/.gitconfig_global ./.gitconfig
 
 # full path links
-ln -sf ~/.dotfiles/cargo_config.toml ./.cargo/config.toml
-ln -sf ~/.dotfiles/nvim ./.config/
-ln -sf ~/.dotfiles/ssh_config ./.ssh/config
+ln -sf ~/.dotfiles/cargo_config.toml ~/.cargo/config.toml
+ln -sf ~/.dotfiles/nvim ~/.config/
+ln -sf ~/.dotfiles/ssh_config ~/.ssh/config
 
 for file in ~/.dotfiles/.{aliases,exports,}; do
     [ -r $file ] && [ -f $file ] && source $file;
