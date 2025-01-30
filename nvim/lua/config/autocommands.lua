@@ -22,7 +22,7 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePre' }, {
 })
 
 -- autoreload files when modified externally
-vim.o.autoread = true
+vim.opt.autoread = true
 local autoreload_files_augroup = vim.api.nvim_create_augroup('AutoreloadFiles', { clear = true })
 vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'CursorHoldI', 'FocusGained', 'FocusLost' }, {
     group = autoreload_files_augroup,

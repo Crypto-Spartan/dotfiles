@@ -79,7 +79,7 @@ return {
         },
     },
     init = function()
-        vim.o.timeout = false
+        vim.opt.timeout = false
         -- vim.o.timeout = true
         -- vim.o.timeoutlen = 300 -- in milliseconds
     end,
