@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
+export EXA_COLORS='da=38;5;213'
+
 alias ls='eza --color=always'
 alias ll='el'       # all files in long format
 alias la='ela'      # all files in long format, excluding . & ..
-
-export EXA_COLORS='da=38;5;213'
 
 # -a: all files
 # -h: add header row
@@ -21,6 +21,14 @@ alias et='eza -hlmT -F -L 2 --color=always'
 alias eta='eza -ahlmT -F -L 2 --color=always --ignore-glob=".git|.memestra"'
 alias eza='eza -m'
 
+# pacman uninstall
+# -R: remove
+# -u: unneeded - removes pkgs that aren't required by any other pkgs
+# -n: nosave - ignore file backup designations; don't rename to a *.pacsave file
+# -s: recursive - remove dependencies, provided they aren't required by other pkgs & they weren't explicitly installed by the user
+alias pcrm='pacman -Runs'
+# pacman install
+alias pci='pacman -S'
 
 # aliases for git
 alias gs='git status'
