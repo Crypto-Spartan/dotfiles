@@ -10,7 +10,10 @@ vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
-vim.opt.clipboard = 'unnamedplus'
+-- Schedule the setting after `UiEnter` because it can increase startup-time.
+vim.schedule(function()
+    vim.opt.clipboard = 'unnamedplus'
+end)
 vim.opt.breakindent = true
 vim.opt.smartindent = true
 vim.opt.undofile = true
@@ -33,11 +36,14 @@ vim.opt.inccommand = 'split'
 vim.opt.jumpoptions = 'stack,view'
 
 -- decrease update time
-vim.opt.updatetime = 250
+vim.opt.updatetime = 1000
 -- show which line cursor is on
 vim.opt.cursorline = true
 -- minimum num of screen lines to keep above & below cursor
 vim.opt.scrolloff = 10
+
+-- ask to save files if taking an operation that would fail due to unsaved changes in the buffer
+vim.opt.confirm = true
 
 -- vim.g.have_nerd_font = string.find(vim.v.servername, 'localhost:') ~= nil
 vim.g.have_nerd_font = true
