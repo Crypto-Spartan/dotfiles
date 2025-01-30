@@ -19,7 +19,7 @@ return {
             --     additional_vim_regex_highlighting and disabled languages for indent
             additional_vim_regex_highlighting = { 'ruby' },
         },
-        indent = { enable = true, disable = { 'ruby', 'lua' } },
+        indent = { enable = true, disable = { 'ruby' } },
     },
     config = function(_, opts)
         -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
