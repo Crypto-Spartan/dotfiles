@@ -21,13 +21,41 @@ vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePre' }, {
     end
 })
 
+local parsed_formatoptions = vim.api.nvim_parse_cmd('set formatoptions-=cro', {})
+local parsed_formatoptions_local = vim.api.nvim_parse_cmd('setlocal formatoptions-=cro', {})
+parsed_formatoptions.addr, parsed_formatoptions.nargs, parsed_formatoptions.nextcmd = nil, nil, nil
+parsed_formatoptions_local.addr, parsed_formatoptions_local.nargs, parsed_formatoptions_local.nextcmd = nil, nil, nil
+vim.api.nvim_create_autocmd({ 'BufEnter' }, {
+    group = vim.api.nvim_create_augroup('SetFormatOptions', { clear = true }),
+    desc = 'Always set Format Options explicitly',
+    callback = function()
+        vim.api.nvim_cmd(parsed_formatoptions --[[@as vim.api.keyset.cmd]], {})
+        vim.api.nvim_cmd(parsed_formatoptions_local --[[@as vim.api.keyset.cmd]], {})
+    end
+})
+
 -- autoreload files when modified externally
 vim.opt.autoread = true
+local parsed_checktime = vim.api.nvim_parse_cmd('checktime', {})
+parsed_checktime.addr, parsed_checktime.nargs, parsed_checktime.nextcmd = nil, nil, nil
 local autoreload_files_augroup = vim.api.nvim_create_augroup('AutoreloadFiles', { clear = true })
 vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'CursorHoldI', 'FocusGained', 'FocusLost' }, {
     group = autoreload_files_augroup,
     desc = 'autoreload files when modified externally',
-    command = "if mode() != 'c' | checktime | endif",
+    callback = function(event)
+        if event.file == '' then
+            return
+        end
+        event = nil
+
+        local mode_obj = vim.api.nvim_get_mode()
+        if mode_obj.blocking or mode_obj.mode == 'c' then
+            return
+        end
+
+        vim.api.nvim_cmd(parsed_checktime --[[@as vim.api.keyset.cmd]], {})
+        -- local status, err = pcall(vim.api.nvim_cmd, parsed_checktime, {})
+    end,
 })
 -- create notification if a buffer has been updated
 vim.api.nvim_create_autocmd('FileChangedShellPost', {
