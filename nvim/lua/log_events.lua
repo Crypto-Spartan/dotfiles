@@ -167,6 +167,7 @@ local plugin_filetypes = {
 }
 
 
+-- local oil_loaded = false
 vim.api.nvim_create_autocmd(all_events, {
     group = vim.api.nvim_create_augroup('event_logging', { clear = true }),
     desc = 'Log all events that can trigger an autocmd',
@@ -175,13 +176,19 @@ vim.api.nvim_create_autocmd(all_events, {
         local event
 
         if event_table.event == 'User' then
+            -- if event_table.file == 'LazyLoad' then
+            --     if oil_loaded then
+            --         return
+            --     elseif event_table.data == 'oil.nvim' then
+            --         oil_loaded = true
+            --     end
             if vim.startswith(event_table.file, 'Telescope') then
                 return
-            end
-
-            for _, v in pairs(user_events_ignore) do
-                if v == event_table.file then
-                    return
+            else
+                for _, v in pairs(user_events_ignore) do
+                    if v == event_table.file then
+                        return
+                    end
                 end
             end
 
@@ -201,7 +208,8 @@ vim.api.nvim_create_autocmd(all_events, {
             return
         end
 
-        if vim.startswith(ft, 'Telescope') then
+        -- if vim.startswith(ft, 'Telescope') then
+        if true then
             local buf_name = vim.api.nvim_buf_get_name(buf_id)
             local e = event_table_to_string(event, buf_id, buf_is_listed, event_table.match, ft, buf_name)
 
