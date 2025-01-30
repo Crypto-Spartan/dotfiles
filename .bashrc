@@ -27,13 +27,6 @@ for file in ~/.dotfiles/.{aliases,exports,}; do
 done;
 unset file;
 
-if [ ! -S ~/.ssh/ssh_auth_sock ]; then
-    eval $(ssh-agent -t 1h -s)
-    ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
-fi
-export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
-export SSH_AGENT_PID="$(pgrep ssh-agent)"
-
 exit_session() {
     . "$HOME/.bash_logout"
 }
