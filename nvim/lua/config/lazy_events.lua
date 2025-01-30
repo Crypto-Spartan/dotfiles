@@ -66,7 +66,6 @@ vim.g.lazy_events_config = {
     },
     custom = {
         StartWithDir = {
-            -- event = 'BufEnter',
             event = 'VimEnter',
             once = true,
             cond = function()
