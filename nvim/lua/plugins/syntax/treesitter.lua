@@ -8,7 +8,7 @@ return {
             'bash', 'diff', 'go', 'html',
             'javascript', 'json', 'kdl', 'lua', 'luadoc', 'markdown', 'markdown_inline',
             'python', 'query', 'regex', 'sql', 'toml', 'vim', 'vimdoc', 'xml',
-            'yaml'
+            'yaml', 'zig'
         },
         -- auto install missing parsers when entering buffer
         auto_install = true,
