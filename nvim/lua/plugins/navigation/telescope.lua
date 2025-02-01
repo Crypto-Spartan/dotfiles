@@ -260,7 +260,7 @@ return {
             {
                 '<leader>ff',
                 function()
-                    local path = vim.custom_fn.trim_oil_path(vim.custom_fn.get_nvim_cwd())
+                    local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().find_files({
                         cwd = path,
                         prompt_title = 'Files in' .. path,
@@ -271,7 +271,7 @@ return {
             {
                 '<leader>fF',
                 function()
-                    local path = vim.custom_fn.trim_oil_path(vim.custom_fn.get_buf_cwd())
+                    local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().find_files({
                         cwd = path,
                         prompt_title = 'Files in' .. path,
@@ -386,7 +386,7 @@ return {
             {
                 '<leader>sf',
                 function()
-                    local path = vim.custom_fn.trim_oil_path(vim.custom_fn.get_nvim_cwd())
+                    local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
                         prompt_title = 'Grep in' .. path,
@@ -397,7 +397,7 @@ return {
             {
                 '<leader>sF',
                 function()
-                    local path = vim.custom_fn.trim_oil_path(vim.custom_fn.get_buf_cwd())
+                    local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
                         prompt_title = 'Grep in' .. path,
@@ -458,7 +458,7 @@ return {
             {
                 '<leader>sw',
                 function()
-                    local path = vim.custom_fn.trim_oil_path(vim.custom_fn.get_nvim_cwd())
+                    local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
                         prompt_title = 'Grep (current word) in' .. path,
@@ -472,7 +472,7 @@ return {
             {
                 '<leader>sW',
                 function()
-                    local path = vim.custom_fn.trim_oil_path(vim.custom_fn.get_buf_cwd())
+                    local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
                         prompt_title = 'Grep (current word) in' .. path,

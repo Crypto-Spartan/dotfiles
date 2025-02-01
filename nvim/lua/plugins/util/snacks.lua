@@ -65,7 +65,7 @@ return {
             '<leader>gg',
             desc = 'Lazygit',
             function()
-                local current_dir = vim.custom_fn.get_buf_cwd_oil_trimmed()
+                local current_dir = vim.custom_fn.get_buf_cwd()
                 local _, git_dir = next(vim.fs.find('.git', {
                     path = current_dir,
                     upward = true,

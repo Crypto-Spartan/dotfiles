@@ -1,3 +1,10 @@
+local function trim_oil_path(path)
+    if vim.startswith(path, 'oil://') then
+        path = path:sub(7)
+    end
+    return path
+end
+
 vim.custom_fn = {
     string_contains = function(str, sub)
         return str:find(sub, 1, true) ~= nil
@@ -34,26 +41,23 @@ vim.custom_fn = {
         return str:sub(1, pos - 1) .. text .. str:sub(pos)
     end,
 
-    trim_oil_path = function(path)
-        if vim.startswith(path, 'oil://') then
-            path = string.sub(path, 7)
-        end
-        return path
-    end,
-
     get_nvim_cwd = function()
-        return vim.fn.getcwd()
+        return vim.uv.fs_realpath(trim_oil_path(vim.fn.getcwd()))
     end,
 
     get_buf_cwd = function()
-        return vim.fn.expand('%:p:h')
+        local buf_name = vim.api.nvim_buf_get_name(0)
+        if vim.endswith(buf_name, '/') then
+            buf_name = buf_name:sub(1, -2)
+        end
+        return vim.uv.fs_realpath(trim_oil_path(buf_name))
     end,
 
-    get_nvim_cwd_oil_trimmed = function()
-        return vim.custom_fn.trim_oil_path(vim.custom_fn.get_nvim_cwd())
-    end,
+    -- get_nvim_cwd_oil_trimmed = function()
+    --     return vim.uv.fs_realpath(trim_oil_path(vim.custom_fn.get_nvim_cwd()))
+    -- end,
 
-    get_buf_cwd_oil_trimmed = function()
-        return vim.custom_fn.trim_oil_path(vim.custom_fn.get_buf_cwd())
-    end,
+    -- get_buf_cwd_oil_trimmed = function()
+    --     return vim.uv.fs_realpath(trim_oil_path(vim.custom_fn.get_buf_cwd()))
+    -- end,
 }

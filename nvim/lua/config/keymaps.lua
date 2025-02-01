@@ -62,7 +62,7 @@ nnoremap('<leader>O', 'O<esc>', { desc = 'Create newline (above) & stay in Norma
 nnoremap('<Leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>]], { desc = 'Search and replace word under cursor in current buffer'})
 
 local function change_nvim_dir_to_current_file()
-    local current_file_dir = vim.custom_fn.trim_oil_path(vim.custom_fn.get_buf_cwd())
+    local current_file_dir = vim.custom_fn.get_buf_cwd()
     vim.api.nvim_set_current_dir(current_file_dir)
 end
 nnoremap('<leader>z', change_nvim_dir_to_current_file, { desc = 'Change nvim cwd to current buffer directory' })
