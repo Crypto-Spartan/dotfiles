@@ -11,6 +11,7 @@ PS1='[\u@\h \W]\$ '
 ln -sf .dotfiles/.bash_logout
 ln -sf .dotfiles/.bash_profile
 ln -sf .dotfiles/.bashrc
+ln -sf .dotfiles/.p10k.zsh
 ln -sf .dotfiles/.zsh_logout
 ln -sf .dotfiles/.zshrc
 # renamed
@@ -30,5 +31,5 @@ unset file;
 exit_session() {
     . "$HOME/.bash_logout"
 }
-trap exit_session EXIT SIGHUP SIGINT SIGQUIT SIGABRT SIGKILL SIGALRM SIGTERM
+trap exit_session EXIT SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGTERM
 eval "$(zoxide init bash)"
