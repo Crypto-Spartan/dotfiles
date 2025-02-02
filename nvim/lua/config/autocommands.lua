@@ -91,5 +91,6 @@ vim.api.nvim_create_autocmd('FileType', {
     end
 })
 
--- replace `h` with `tabh h` in command mode
+-- replace `h` with `tab h` in command mode
 vim.cmd[[ cabbrev h tab h ]]
+vim.cmd[[ cabbrev help tab h ]]
