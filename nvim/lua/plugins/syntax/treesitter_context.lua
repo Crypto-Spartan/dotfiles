@@ -2,6 +2,7 @@ return {
     'nvim-treesitter/nvim-treesitter-context',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     event = { 'LazyFileOpen', 'BufNewFile' },
+    ft = { 'scm' },
     opts = {
         max_lines = 12,
         multiline_theshold = 3,

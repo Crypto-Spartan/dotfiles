@@ -3,6 +3,7 @@ return {
     branch = 'master',
     build = ':TSUpdate',
     event = { 'LazyOilPreview', 'LazyFileOpen', 'BufNewFile' },
+    ft = { 'scm' },
     opts = {
         ensure_installed = {
             'bash', 'diff', 'go', 'html',
