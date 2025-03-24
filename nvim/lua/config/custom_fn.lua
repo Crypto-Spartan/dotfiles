@@ -53,11 +53,24 @@ vim.custom_fn = {
         return vim.uv.fs_realpath(trim_oil_path(buf_name))
     end,
 
-    -- get_nvim_cwd_oil_trimmed = function()
-    --     return vim.uv.fs_realpath(trim_oil_path(vim.custom_fn.get_nvim_cwd()))
-    -- end,
+    benchmark = function(unit, decPlaces, n, f, ...)
+        local units = {
+            ['seconds'] = 1,
+            ['milliseconds'] = 1000,
+            ['microseconds'] = 1000000,
+            ['nanoseconds'] = 1000000000
+        }
 
-    -- get_buf_cwd_oil_trimmed = function()
-    --     return vim.uv.fs_realpath(trim_oil_path(vim.custom_fn.get_buf_cwd()))
-    -- end,
+        local elapsed = 0
+        local multiplier = units[unit]
+        for i = 1, n do
+            -- local now = os.clock()
+            local before = vim.uv.clock_gettime('realtime')
+            f(...)
+            local after = vim.uv.clock_gettime('realtime')
+            elapsed = (after.sec - before.sec) + ((after.nsec - before.nsec) / 1000000000)
+            -- elapsed = elapsed + (os.clock() - now)
+        end
+        vim.print(string.format('Benchmark results:\n  - %d function calls\n  - %.'.. decPlaces ..'f %s elapsed\n  - %.'.. decPlaces ..'f %s avg execution time.', n, elapsed * multiplier, unit, (elapsed / n) * multiplier, unit))
+    end,
 }
