@@ -71,7 +71,7 @@ nnoremap('<leader>z', change_nvim_dir_to_current_file, { desc = 'Change nvim cwd
 --[[ *MISC KEYMAPS* ]]--
 
 -- insert timestamp
-vim.keymap.set({'n','i','x'}, '<F5>', function() vim.api.nvim_paste(os.date('%Y-%m-%d %H:%M:%S'), false, -1) end, { desc = 'Insset Timestamp' })
+vim.keymap.set({'n','i','x'}, '<F5>', function() vim.api.nvim_paste(os.date('%Y-%m-%d %H:%M:%S'), false, -1) end, { desc = 'Insert Timestamp' })
 
 nnoremap('<bs>', '<C-^>', { desc = 'Switch to last buffer' })
 
