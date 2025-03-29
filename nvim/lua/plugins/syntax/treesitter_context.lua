@@ -5,7 +5,7 @@ return {
     ft = { 'scm' },
     opts = {
         max_lines = 12,
-        multiline_theshold = 3,
+        multiline_threshold = 3,
         trim_scope = 'outer'
     },
     config = function(_, opts)
