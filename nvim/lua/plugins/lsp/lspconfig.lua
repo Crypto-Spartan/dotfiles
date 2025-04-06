@@ -142,6 +142,54 @@ return {
             -- },
         }
 
+        vim.keymap.set('n', '<leader>ld', vim.diagnostic.open_float, { desc = 'LSP: Diagnostic Float'})
+        local diagnostic_icons = {
+            [vim.diagnostic.severity.ERROR] = '󰅚 ',
+            [vim.diagnostic.severity.WARN]  = '󰀪 ',
+            [vim.diagnostic.severity.INFO]  = '󰋽 ',
+            [vim.diagnostic.severity.HINT]  = '󰌶 ',
+        }
+        vim.diagnostic.config({
+            severity_sort = true,
+            underline = {
+                severity = { min = vim.diagnostic.severity.WARN }
+            },
+            signs = vim.g.have_nerd_font and {
+                text = diagnostic_icons,
+            } or {},
+            virtual_text = {
+                severity = { min = vim.diagnostic.severity.WARN },
+                current_line = false,
+                source = 'if_many',
+                spacing = 2,
+                -- prefix = function(diagnostic, i)
+                --     return ('%d: %s'):format(i, diagnostic_icons[diagnostic.severity])
+                -- end,
+                -- format = function(diagnostic)
+                --     local diagnostic_message = {
+                --         [vim.diagnostic.severity.ERROR] = diagnostic.message,
+                --         [vim.diagnostic.severity.WARN] = diagnostic.message,
+                --         [vim.diagnostic.severity.INFO] = diagnostic.message,
+                --         [vim.diagnostic.severity.HINT] = diagnostic.message,
+                --     }
+                --     return diagnostic_message[diagnostic.severity]
+                -- end,
+            },
+            -- virtual_lines = {
+            --     severity = { min = vim.diagnostic.severity.HINT },
+            --     current_line = true,
+            --     source = 'if_many',
+            -- }
+            float = {
+                scope = 'line',
+                severity = { min = vim.diagnostic.severity.HINT },
+                prefix = function(diagnostic, i)
+                    return ('%d: %s'):format(i, diagnostic_icons[diagnostic.severity])
+                end,
+                border = 'rounded',
+            }
+        })
+
         require('mason').setup()
 
         -- You can add other tools here that you want Mason to install for you, so that they are available from within Neovim.
