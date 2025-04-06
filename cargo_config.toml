@@ -1,9 +1,9 @@
-[registries.crates-io]
-protocol = "sparse"
-
 [build]
 rustflags = ["-C", "target-cpu=native", "-Z", "threads=8"]
 
 [profile.release]
 lto = "fat"
 codegen-units = 1
+
+[registries.crates-io]
+protocol = "sparse"
