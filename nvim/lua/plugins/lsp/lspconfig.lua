@@ -11,7 +11,7 @@ return {
     },
     init = function()
         vim.api.nvim_create_autocmd('LspAttach', {
-            group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+            group = vim.api.nvim_create_augroup('lspconfig-lsp-attach', { clear = true }),
             callback = function(event)
                 local map = function(keys, func, desc, mode)
                     mode = mode or 'n'
@@ -113,7 +113,7 @@ return {
                         runtime = { version = 'LuaJIT' },
                         completion = { callSnippet = 'Replace' },
                         diagnostics = {
-                            -- disable = { 'missing-fields' }, -- ignore Lua_LS's noisy `missing-fields` warnings
+                            disable = { 'missing-fields' }, -- ignore Lua_LS's noisy `missing-fields` warnings
                             globals = { 'vim' }, -- make the LSP recognize 'vim' global
                         },
                         workspace = {
