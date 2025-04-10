@@ -75,9 +75,6 @@ vim.keymap.set({'n','i','x'}, '<F5>', function() vim.api.nvim_paste(os.date('%Y-
 
 nnoremap('<bs>', '<C-^>', { desc = 'Switch to last buffer' })
 
--- shift-q will make an operation use the black hole register
-nnoremap('Q', '"_')
-
 -- yank whole line without trailing newline character
 nnoremap('yY', '^y$', { desc = 'Yank line without newline char' })
 
