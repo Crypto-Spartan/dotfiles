@@ -57,7 +57,7 @@ vim.keymap.set({'n','v','x'}, '<leader>d', [["_d]], { desc = 'Delete - no cut to
 nnoremap('<leader>o', 'o<esc>', { desc = 'Create newline (below) & stay in Normal Mode' })
 nnoremap('<leader>O', 'O<esc>', { desc = 'Create newline (above) & stay in Normal Mode' })
 
--- From the Vim wiki: https://bit.ly/4eLAARp
+-- From the Vim wiki: https://vim.fandom.com/wiki/Search_and_replace_the_word_under_the_cursor
 -- Search and replace word under the cursor
 nnoremap('<Leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>]], { desc = 'Search and replace word under cursor in current buffer' })
 
