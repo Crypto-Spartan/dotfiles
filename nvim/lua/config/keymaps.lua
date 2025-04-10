@@ -90,28 +90,22 @@ nnoremap('gy', "`[v`]", { desc = 'Select recently pasted, yanked, or changed tex
 -- if motion is `10j`, vim.v.count == 10
 -- these allow `j` & `k` to work with wordwrapped lines while not messing up motions
 local gj_key = vim.api.nvim_replace_termcodes('gj', true, false, true)
-local function map_j()
-    local count = vim.v.count
-    if count == 0 then
-        vim.api.nvim_feedkeys(gj_key, 'n', false)
-    else
-        local key = vim.api.nvim_replace_termcodes(tostring(count)..'j', true, false, true)
-        vim.api.nvim_feedkeys(key, 'n', false)
-    end
-end
-nnoremap('j', map_j, { nowait = true })
-
 local gk_key = vim.api.nvim_replace_termcodes('gk', true, false, true)
-local function map_k()
-    local count = vim.v.count
-    if count == 0 then
-        vim.api.nvim_feedkeys(gk_key, 'n', false)
-    else
-        local key = vim.api.nvim_replace_termcodes(tostring(count)..'k', true, false, true)
-        vim.api.nvim_feedkeys(key, 'n', false)
+local function make_jk_map_func(g_key, key)
+    vim.validate('key', key, 'string')
+    local map_jk = function()
+        local count = vim.v.count
+        if count == 0 then
+            vim.api.nvim_feedkeys(g_key, 'n', false)
+        else
+            local key_with_count = vim.api.nvim_replace_termcodes(tostring(count)..key, true, false, true)
+            vim.api.nvim_feedkeys(key_with_count, 'n', false)
+        end
     end
+    return map_jk
 end
-nnoremap('k', map_k, { nowait = true })
+nnoremap('j', make_jk_map_func(gj_key, 'j'), { nowait = true })
+nnoremap('k', make_jk_map_func(gk_key, 'k'), { nowait = true })
 
 -- shift-h & shift-l go to beginning & end of line, wordwrap safe
 nnoremap('H', 'g^')
@@ -125,14 +119,17 @@ local cc_no_blackhole_key = vim.api.nvim_replace_termcodes([["_cc]], true, false
 local little_a_key = vim.api.nvim_replace_termcodes('a', true, false, true)
 local big_a_key    = vim.api.nvim_replace_termcodes('A', true, false, true)
 -- Auto indent on empty line with 'a' or 'A'
-local function InsertModeWithIndent(key)
-    local current_line = vim.api.nvim_get_current_line()
-    -- %g represents all printable characters except whitespace (not in Lua 5.1, but LuaJIT added it)
-    if current_line:len() == 0 or current_line:match('%g') == nil then
-        vim.api.nvim_feedkeys(cc_no_blackhole_key, 'n', false)
-    else
-        vim.api.nvim_feedkeys(key, 'n', false)
+local function make_insert_mode_indent_func(key)
+    local map_a = function()
+        local current_line = vim.api.nvim_get_current_line()
+        -- %g represents all printable characters except whitespace (not in Lua 5.1, but LuaJIT added it)
+        if current_line:len() == 0 or current_line:match('%g') == nil then
+            vim.api.nvim_feedkeys(cc_no_blackhole_key, 'n', false)
+        else
+            vim.api.nvim_feedkeys(key, 'n', false)
+        end
     end
+    return map_a
 end
-nnoremap('a', function() InsertModeWithIndent(little_a_key) end, { nowait = true })
-nnoremap('A', function() InsertModeWithIndent(big_a_key) end, { nowait = true })
+nnoremap('a', make_insert_mode_indent_func(little_a_key), { nowait = true })
+nnoremap('A', make_insert_mode_indent_func(big_a_key),    { nowait = true })
