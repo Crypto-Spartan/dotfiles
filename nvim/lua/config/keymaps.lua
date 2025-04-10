@@ -116,12 +116,12 @@ end
 nnoremap('k', map_k, { nowait = true })
 
 -- shift-h & shift-l go to beginning & end of line, wordwrap safe
-nnoremap('H', 'g^', { silent = true })
-nnoremap('L', 'g$', { silent = true })
+nnoremap('H', 'g^')
+nnoremap('L', 'g$')
 
 -- delete character without putting text into register
-nnoremap('x', [["_x]], { silent = true })
-nnoremap('X', [["_X]], { silent = true })
+nnoremap('x', [["_x]])
+nnoremap('X', [["_X]])
 
 local cc_no_blackhole_key = vim.api.nvim_replace_termcodes([["_cc]], true, false, true)
 local little_a_key = vim.api.nvim_replace_termcodes('a', true, false, true)
