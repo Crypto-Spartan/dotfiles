@@ -59,7 +59,7 @@ nnoremap('<leader>O', 'O<esc>', { desc = 'Create newline (above) & stay in Norma
 
 -- From the Vim wiki: https://bit.ly/4eLAARp
 -- Search and replace word under the cursor
-nnoremap('<Leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>]], { desc = 'Search and replace word under cursor in current buffer'})
+nnoremap('<Leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>]], { desc = 'Search and replace word under cursor in current buffer' })
 
 local function change_nvim_dir_to_current_file()
     local current_file_dir = vim.custom_fn.get_buf_cwd()
