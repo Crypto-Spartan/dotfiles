@@ -91,8 +91,29 @@ nnoremap('gy', "`[v`]", { desc = 'Select recently pasted, yanked, or changed tex
 
 -- if motion is `10j`, vim.v.count == 10
 -- these allow `j` & `k` to work with wordwrapped lines while not messing up motions
-nnoremap('j', function() if vim.v.count == 0 then return 'gj' else return 'j' end end, { expr = true, silent = true })
-nnoremap('k', function() if vim.v.count == 0 then return 'gk' else return 'k' end end, { expr = true, silent = true })
+local gj_key = vim.api.nvim_replace_termcodes('gj', true, false, true)
+local function map_j()
+    local count = vim.v.count
+    if count == 0 then
+        vim.api.nvim_feedkeys(gj_key, 'n', false)
+    else
+        local key = vim.api.nvim_replace_termcodes(tostring(count)..'j', true, false, true)
+        vim.api.nvim_feedkeys(key, 'n', false)
+    end
+end
+nnoremap('j', map_j, { nowait = true })
+
+local gk_key = vim.api.nvim_replace_termcodes('gk', true, false, true)
+local function map_k()
+    local count = vim.v.count
+    if count == 0 then
+        vim.api.nvim_feedkeys(gk_key, 'n', false)
+    else
+        local key = vim.api.nvim_replace_termcodes(tostring(count)..'k', true, false, true)
+        vim.api.nvim_feedkeys(key, 'n', false)
+    end
+end
+nnoremap('k', map_k, { nowait = true })
 
 -- shift-h & shift-l go to beginning & end of line, wordwrap safe
 nnoremap('H', 'g^', { silent = true })
@@ -102,15 +123,18 @@ nnoremap('L', 'g$', { silent = true })
 nnoremap('x', [["_x]], { silent = true })
 nnoremap('X', [["_X]], { silent = true })
 
+local cc_no_blackhole_key = vim.api.nvim_replace_termcodes([["_cc]], true, false, true)
+local little_a_key = vim.api.nvim_replace_termcodes('a', true, false, true)
+local big_a_key    = vim.api.nvim_replace_termcodes('A', true, false, true)
+-- Auto indent on empty line with 'a' or 'A'
 local function InsertModeWithIndent(key)
     local current_line = vim.api.nvim_get_current_line()
     -- %g represents all printable characters except whitespace (not in Lua 5.1, but LuaJIT added it)
-    if string.len(current_line) == 0 or string.match(current_line, '%g') == nil then
-        return [["_cc]]
+    if current_line:len() == 0 or current_line:match('%g') == nil then
+        vim.api.nvim_feedkeys(cc_no_blackhole_key, 'n', false)
     else
-        return key
+        vim.api.nvim_feedkeys(key, 'n', false)
     end
 end
--- Auto indent on empty line with 'a' or 'A'
-nnoremap('a', function() return InsertModeWithIndent('a') end, { expr = true })
-nnoremap('A', function() return InsertModeWithIndent('A') end, { expr = true })
+nnoremap('a', function() InsertModeWithIndent(little_a_key) end, { nowait = true })
+nnoremap('A', function() InsertModeWithIndent(big_a_key) end, { nowait = true })
