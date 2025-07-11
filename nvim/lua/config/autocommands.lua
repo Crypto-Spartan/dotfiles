@@ -79,6 +79,32 @@ vim.api.nvim_create_autocmd('BufWrite', {
     end
 })
 
+-- reload plugin on save
+vim.api.nvim_create_autocmd('BufWritePost', {
+    group = vim.api.nvim_create_augroup('LuaReloadModule', { clear = true }),
+    pattern = { '*.lua' },
+    desc = 'Reload module after saving *.lua file',
+    callback = function()
+        local lines = vim.api.nvim_buf_get_lines(0, 0, 3, false)
+        -- vim.print(lines)
+        for _, line in ipairs(lines) do
+            if line and line:match('^local%s+M%s*=%s*{}') then
+                local filepath = vim.fn.expand('%:p')
+                local module_name = vim.fn.fnamemodify(filepath, ':.:r')
+                package.loaded[module_name] = nil
+                pcall(require, module_name)
+
+                vim.notify('Module reloaded: '..module_name, nil, {
+                    title = 'Notification',
+                    timeout = 300,
+                    render = 'compact',
+                })
+                return
+            end
+        end    
+    end
+})
+
 -- add line numbers when in neovim help docs
 -- see `:help nvim_create_autocmd()`
 vim.api.nvim_create_autocmd('FileType', {
@@ -92,5 +118,5 @@ vim.api.nvim_create_autocmd('FileType', {
 })
 
 -- replace `h` with `tab h` in command mode
-vim.cmd[[ cabbrev h tab h ]]
-vim.cmd[[ cabbrev help tab h ]]
+vim.cmd.cabbrev('h tab h')
+vim.cmd.cabbrev('help tab h')
