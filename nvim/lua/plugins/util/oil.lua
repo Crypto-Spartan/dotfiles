@@ -2,7 +2,6 @@ return {
     'stevearc/oil.nvim',
     event = { 'StartWithDir' },
     keys = {
-        -- nnoremap('<leader>e', vim.cmd.Oil, { desc = 'Open File Explorer (Oil)' })
         {
             '<leader>e',
             function()
@@ -13,8 +12,9 @@ return {
         {
             '<leader>E',
             function()
+                local path = vim.custom_fn.get_buf_cwd()
                 vim.cmd.tabnew()
-                package.loaded.oil.open()
+                package.loaded.oil.open(path)
             end,
             desc = 'Open File Explorer - New Tab (Oil)'
         }
@@ -25,6 +25,8 @@ return {
         keymaps = {
             ['<bs>'] = 'actions.parent',
             ['<C-c>'] = { '<nop>', desc = 'Same as <esc>' },
+            ['<C-s>'] = { vim.cmd.write, desc = 'Save the buffer' },
+            ['<C-v>'] = { 'actions.select', opts = { vertical = true } },
             ['<C-p>'] = {
                 callback = function()
                     local oil = package.loaded.oil
