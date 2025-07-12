@@ -1,7 +1,7 @@
 return {
     'HiPhish/rainbow-delimiters.nvim',
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    event = { 'LazyFileOpen', 'LazyOilPreview', 'BufNewFile' },
+    event = { 'LazyFileOpen', 'LazyOilPreview', 'LazyTelescopePreview', 'BufNewFile' },
     main = 'rainbow-delimiters.setup',
     init = function()
         vim.g.rainbow_delimiters = {
