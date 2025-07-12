@@ -14,7 +14,7 @@ return {
         -- create the highlight groups in the highlight setup hook
         -- this ensures they are reset if the colorscheme changes
         hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
-            vim.api.nvim_set_hl(0, 'RainbowRed', { link = 'RainbowDelimiter' })
+            vim.api.nvim_set_hl(0, 'RainbowRed', { link = 'RainbowDelimiterRed' })
             vim.api.nvim_set_hl(0, 'RainbowViolet', { link = 'RainbowDelimiterViolet' })
             vim.api.nvim_set_hl(0, 'RainbowGreen', { link = 'RainbowDelimiterGreen' })
             vim.api.nvim_set_hl(0, 'RainbowBlue', { link = 'RainbowDelimiterBlue' })
@@ -26,7 +26,7 @@ return {
         local ibl_pkg = require('ibl')
         ibl_pkg.setup({
             scope = {
-                highlight = vim.g.rainbow_delimiters.highlight,
+                highlight = vim.g.rainbow_delimiters.highlight, -- defined in rainbow_delims.lua
                 include = {
                     node_type = {
                         python = { 'argument_list', 'with_statement', 'parenthesized_expression' },
