@@ -2,14 +2,13 @@ return {
     'nvim-treesitter/nvim-treesitter',
     branch = 'master',
     build = ':TSUpdate',
-    event = { 'LazyOilPreview', 'LazyFileOpen', 'BufNewFile' },
+    event = { 'LazyFileOpen', 'LazyOilPreview', 'LazyTelescopePreview', 'BufNewFile' },
     ft = { 'scm' },
     opts = {
         ensure_installed = {
-            'bash', 'diff', 'go', 'html',
-            'javascript', 'json', 'kdl', 'lua', 'luadoc', 'markdown', 'markdown_inline',
-            'python', 'query', 'regex', 'sql', 'toml', 'vim', 'vimdoc', 'xml',
-            'yaml', 'zig'
+            'bash', 'comment', 'diff', 'dockerfile', 'elixir', 'go', 'html',
+            'javascript', 'json', 'kdl', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'ocaml', 'perl',
+            'python', 'r', 'query', 'regex', 'sql', 'toml', 'vim', 'vimdoc', 'xml', 'yaml', 'zig'
         },
         -- auto install missing parsers when entering buffer
         auto_install = true,
