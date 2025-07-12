@@ -26,7 +26,7 @@ return {
         -- end
 
         local function current_buffer_fuzzy_find()
-            return ts_builtin().current_buffer_fuzzy_find()
+            ts_builtin().current_buffer_fuzzy_find()
         end
 
         local function ts_buffers_cmd()
@@ -48,7 +48,7 @@ return {
             ts_utils().notify(picker_name, {
                 msg = string.format(
                 "'ripgrep', or similar alternative, is a required dependency for the %s picker. "
-                .. "Visit https://github.com/BurntSushi/ripgrep for installation instructions.",
+                .. "Visit https://github.com/BurntSushi/ripgrep#installation for installation instructions.",
                 picker_name
                 ),
                 level = 'ERROR',
@@ -185,7 +185,7 @@ return {
             {
                 '<leader>/',
                 current_buffer_fuzzy_find,
-                desc = 'Fuzzy find in current buffer'
+                desc = 'Fuzzy Find in Current Buffer'
             },
             {
                 '<leader>:',
@@ -217,10 +217,8 @@ return {
             -- find
             {
                 '<leader>f/',
-                function()
-                    current_buffer_fuzzy_find()
-                end,
-                desc = 'Fuzzy find in current buffer'
+                current_buffer_fuzzy_find,
+                desc = 'Fuzzy Find in Current Buffer'
             },
             {
                 '<leader>fa',
@@ -263,7 +261,7 @@ return {
                     local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().find_files({
                         cwd = path,
-                        prompt_title = 'Files in' .. path,
+                        prompt_title = 'Find Files in ' .. path,
                     })
                 end,
                 desc = 'Files (nvim root dir)'
@@ -274,7 +272,7 @@ return {
                     local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().find_files({
                         cwd = path,
-                        prompt_title = 'Files in' .. path,
+                        prompt_title = 'Find Files in ' .. path,
                     })
                 end,
                 desc = 'Files (cwd)'
@@ -283,8 +281,27 @@ return {
                 '<leader>fh',
                 function()
                     ts_builtin().help_tags({
-                        attach_mappings = function(_, map)
-                            map({'i','n'}, '<cr>', ts_actions().select_tab)
+                        attach_mappings = function(prompt_bufnr)
+                            local actions = require('telescope.actions')
+                            local action_set = require('telescope.actions.set')
+                            local action_state = require('telescope.actions.state')
+                            local utils = require('telescope.actions.utils')
+                            action_set.select:replace(function(_, cmd)
+                                local selection = action_state.get_selected_entry()
+                                if selection == nil then
+                                    utils.__warn_no_selection('builtin.help_tags')
+                                    return
+                                end
+
+                                actions.close(prompt_bufnr)
+                                if cmd == 'default' or cmd == 'vertical' then
+                                    vim.cmd('vert bo help ' .. selection.value)
+                                elseif cmd == 'tab' then
+                                    vim.cmd('tab help ' .. selection.value)
+                                elseif cmd == 'horizontal' then
+                                    vim.cmd('help ' .. selection.value)
+                                end
+                            end)
                             return true
                         end
                     })
@@ -338,7 +355,7 @@ return {
                 function()
                     ts_builtin().find_files({
                         cwd = nvim_config_dir,
-                        prompt_title = 'Files in' .. nvim_config_dir,
+                        prompt_title = 'Find Files in ' .. nvim_config_dir,
                     })
                 end,
                 desc = 'Neovim Config Files'
@@ -348,7 +365,7 @@ return {
                 function()
                     ts_builtin().find_files({
                         cwd = plugins_dir,
-                        prompt_title = 'Plugin Files in' .. plugins_dir,
+                        prompt_title = 'Find Plugin Files in ' .. plugins_dir,
                     })
                 end,
                 desc = 'Plugin Files'
@@ -362,9 +379,7 @@ return {
             },
             {
                 '<leader>fr',
-                function()
-                    ts_resume_cmd()
-                end,
+                ts_resume_cmd,
                 desc = 'Resume (Telescope)'
             },
             {
@@ -389,7 +404,7 @@ return {
                     local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep in' .. path,
+                        prompt_title = 'Grep in ' .. path,
                     })
                 end,
                 desc = 'Grep (nvim root dir)'
@@ -400,7 +415,7 @@ return {
                     local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep in' .. path,
+                        prompt_title = 'Grep in ' .. path,
                     })
                 end,
                 desc = 'Grep (cwd)'
@@ -423,7 +438,7 @@ return {
                 function()
                     ts_builtin().live_grep({
                         cwd = nvim_config_dir,
-                        prompt_title = 'Grep in' .. nvim_config_dir,
+                        prompt_title = 'Grep in ' .. nvim_config_dir,
                     })
                 end,
                 desc = 'Neovim Config Files (Grep)'
@@ -432,9 +447,8 @@ return {
                 '<leader>so',
                 function()
                     ts_builtin().live_grep({
-                        grep_in_open_files = true,
+                        grep_open_files = true,
                         prompt_title = 'Grep in Open Files',
-
                     })
                 end,
                 desc = 'Open Files (Grep)'
@@ -453,35 +467,35 @@ return {
             {
                 '<leader>sr',
                 ts_resume_cmd,
-                desc = 'Telescope Resume'
+                desc = 'Resume (Telescope)'
             },
             {
                 '<leader>sw',
                 function()
                     local path = vim.custom_fn.get_nvim_cwd()
-                    ts_builtin().live_grep({
+                    ts_builtin().grep_string({
                         cwd = path,
-                        prompt_title = 'Grep (current word) in' .. path,
+                        prompt_title = 'Grep (current word) in ' .. path,
                         word_match = '-w',
                         initial_mode = 'normal'
                     })
                 end,
                 desc = 'Grep current Word (nvim root dir)',
-                mode = {'n', 'v'}
+                mode = {'n','v'}
             },
             {
                 '<leader>sW',
                 function()
                     local path = vim.custom_fn.get_buf_cwd()
-                    ts_builtin().live_grep({
+                    ts_builtin().grep_string({
                         cwd = path,
-                        prompt_title = 'Grep (current word) in' .. path,
+                        prompt_title = 'Grep (current word) in ' .. path,
                         word_match = '-w',
                         initial_mode = 'normal'
                     })
                 end,
                 desc = 'Grep current Word (cwd)',
-                mode = {'n', 'v'}
+                mode = {'n','v'}
             },
         }
     end,
