@@ -1,6 +1,6 @@
 return {
     'hrsh7th/nvim-cmp',
-    event = { 'LazyFileInsert', 'LazyOilInsert' },
+    event = { 'BufEnter' },
     dependencies = {
         'L3MON4D3/LuaSnip',                -- snippet engine
         'saadparwaiz1/cmp_luasnip',        -- autocompletion
@@ -32,14 +32,14 @@ return {
                 ['<C-j>']     = cmp.mapping.select_next_item(),
                 ['<C-u>']     = cmp.mapping.scroll_docs(-4),
                 ['<C-d>']     = cmp.mapping.scroll_docs(4),
-                ['<C-Space>'] = cmp.mapping.complete(), --show completion suggestion
+                ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
                 ['<C-y>']     = cmp.mapping.confirm({ select = true }),
                 ['<CR>']      = cmp.mapping.confirm({ select = false }),
             }),
             sources = cmp.config.sources({
                 {
                     name = 'lazydev',
-                    -- set the group index to 0 to skip loading LuaLS completions as lazydev recommends it
+                    -- set group index to 0 to skip loading LuaLS completions as lazydev recommends it
                     group_index = 0,
                 },
                 { name = 'nvim_lsp' },
