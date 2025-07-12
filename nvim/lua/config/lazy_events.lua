@@ -1,65 +1,7 @@
 vim.g.lazyfileopen_triggered = false
+vim.g.lazytelescopepreview = false
 
--- local function log_to_sock(str)
---     -- nc listen command is `nc -lkU /tmp/log.sock`
---     vim.fn.system('printf "' .. str .. '\n"' .. ' | nc -NU /tmp/log.sock')
--- end
--- local lines = string.rep(string.rep('=', 200) .. '\n', 3)
---
--- log_to_sock('\n\n')
--- log_to_sock(lines)
--- log_to_sock('\n\n')
---
--- local function event_table_to_string(event, buf, buf_is_listed, match, filetype, buf_name)
---     if filetype == nil or filetype:len() == 0 then
---         filetype = 'none'
---     end
---
---     local result = 'buf: ' .. buf .. '\tis_listed: ' .. tostring(buf_is_listed) .. ' \tfiletype: ' .. filetype .. '\tevent: ' .. event
---     if match:len() > 0 and event ~= match then
---         if event:len() < 9 then
---             result = result .. '\t\t'
---         else
---             result = result .. '\t'
---         end
---         result = result .. 'match: ' .. match
---     end
---
---     if buf_name:len() > 0 then
---         result = result .. '\t\tbuf_name: ' .. buf_name
---     end
---
---     return result
--- end
---
--- local user_events_ignore = {
---     -- 'LazyLoad',
---     'LazyRender',
---     'LazyLog',
---     'LazyPluginLog',
---     -- 'LazyPluginClean',
---     -- 'LazyPluginFetch',
---     -- 'LazyPluginStatus',
---     -- 'LazyPluginCheckout',
---     'GitSignsUpdate',
--- }
---
--- local plugin_filetypes = {
---     'cmp_menu',
---     'wk',
---     'oil',
---     'notify',
---     'snacks_terminal',
---     'diff',
---     'TelescopePrompt',
---     'TelescopeResults',
---     'flash_prompt',
---     'undotree',
---     'lazy',
---     'lazy_backdrop',
--- }
-
--- must be loaded before require('lazy').setup() since this plugin has to execute some logice before other plugin specs are loaded
+-- must be loaded before require('lazy').setup() since this plugin has to execute some logic before other plugin specs are loaded
 vim.g.lazy_events_config = {
     simple = {
         LazyFile = { 'BufReadPost', 'BufNewFile' },
@@ -82,12 +24,7 @@ vim.g.lazy_events_config = {
         LazyFileOpen = {
             event = 'FileType',
             cond = function(event)
-                if vim.g.lazyfileopen_triggered then
-                    return false
-                end
-                event.group = nil
-
-                if vim.fn.buflisted(event.buf) == 0 then
+                if vim.g.lazyfileopen_triggered or vim.fn.buflisted(event.buf) == 0 then
                     return false
                 end
 
@@ -97,6 +34,7 @@ vim.g.lazy_events_config = {
                     return false
                 end
                 filetype = nil
+                event.group = nil
                 event.match = nil
 
                 local f_stat = vim.uv.fs_stat(event.file)
@@ -110,6 +48,27 @@ vim.g.lazy_events_config = {
                     vim.schedule(function()
                         vim.api.nvim_del_autocmd(event.id)
                         vim.g.lazyfileopen_triggered = nil
+                    end)
+                    return true
+                else
+                    return false
+                end
+            end
+        },
+        LazyTelescopePreview = {
+            event = 'FileType',
+            cond = function(event)
+                -- if vim.g.lazyfileopen_triggered or vim.fn.buflisted(event.buf) == 0 then
+                if vim.g.lazytelescopepreview then
+                    return false
+                end
+
+                local filetype = event.match
+                if vim.startswith(filetype, 'Telescope') then
+                    vim.g.lazytelescopepreview = true
+                    vim.schedule(function()
+                        vim.api.nvim_del_autocmd(event.id)
+                        vim.g.lazytelescopepreview = nil
                     end)
                     return true
                 else
