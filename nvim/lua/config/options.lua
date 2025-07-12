@@ -10,10 +10,10 @@ vim.opt.termguicolors = true
 vim.opt.number = true
 vim.opt.relativenumber = true
 
--- Schedule the setting after `UiEnter` because it can increase startup-time.
-vim.schedule(function()
+-- schedule the setting after `UiEnter` because it can increase startup time
+vim.defer_fn(function()
     vim.opt.clipboard = 'unnamedplus'
-end)
+end, 1000)
 vim.opt.breakindent = true
 vim.opt.smartindent = true
 vim.opt.undofile = true
@@ -25,8 +25,8 @@ vim.opt.incsearch = true
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'` and `:help 'listchars'`
+-- sets how neovim will display certain whitespace characters in the editor
+--  see `:help 'list'` and `:help 'listchars'`
 vim.opt.list = true
 vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
@@ -49,7 +49,7 @@ vim.opt.confirm = true
 vim.g.have_nerd_font = true
 
 if vim.fn.executable('rg') == 1 then
-    vim.opt.grepprg = 'rg --vimgrep --no-heading --smart-case'
+    vim.opt.grepprg = 'rg -u --hidden --glob "!.git" --vimgrep --no-heading --smart-case'
     vim.opt.grepformat = '%f:%l:%c:%m'
 end
 
