@@ -1,7 +1,7 @@
 return {
     'folke/todo-comments.nvim',
     dependencies = { 'nvim-lua/plenary.nvim' },
-    event = { 'LazyFileOpen', 'BufNewFile' },
+    event = { 'LazyFileOpen', 'LazyTelescopePreview', 'BufNewFile' },
     opts = {
         signs = false,
     }
