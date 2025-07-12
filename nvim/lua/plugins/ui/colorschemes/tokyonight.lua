@@ -36,7 +36,7 @@ return {
                 -- cursor line num color
                 hi.CursorLineNr = { fg = '#00ff00', bold = true }
                 -- cursor line background color
-                hi.CursorLine = { fg = '#2e3142' }
+                hi.CursorLine = { bg = '#2e3142' }
 
                 hi.Comment = { fg = c.comment }
                 hi.CmpGhostText = { fg = c.comment }
