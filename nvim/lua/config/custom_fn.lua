@@ -68,7 +68,7 @@ end
 
 CF.get_nvim_cwd = function()
     return CF.get_parent_dir(CF.trim_oil_path(vim.fn.getcwd()))
-end,
+end
 
 CF.get_buf_cwd = function()
     return CF.get_parent_dir(CF.trim_oil_path(vim.api.nvim_buf_get_name(0)))
