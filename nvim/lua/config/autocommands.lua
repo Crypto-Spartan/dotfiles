@@ -101,7 +101,7 @@ vim.api.nvim_create_autocmd('BufWritePost', {
                 })
                 return
             end
-        end    
+        end
     end
 })
 
