@@ -54,6 +54,48 @@ CF.get_filesize_str = function(filepath)
     return CF.format_bytes(CF.get_filesize(filepath))
 end
 
+CF.get_dir_info = function(dirpath)
+    vim.validate('dirpath', dirpath, 'string')
+
+    local dir_handle = uv.fs_scandir(dirpath)
+    if not dir_handle then
+        return 0, 0, 0
+    end
+
+    local total_bytes = 0
+    local total_filecount = 0
+    local total_dircount = 0
+
+    while true do
+        local entry_name, entry_type = uv.fs_scandir_next(dir_handle)
+        if not entry_name or not entry_type then
+            break
+        end
+
+        if entry_name ~= '.' and entry_name ~= '..' then
+            local entry_path = vim.fs.joinpath(dirpath, entry_name)
+            if entry_type == 'file' then
+                total_bytes = total_bytes + vim.fn.getfsize(entry_path)
+                total_filecount = total_filecount + 1
+            elseif entry_type == 'directory' then
+                local bytes, filecount, dircount = CF.get_dif_info(entry_path)
+                total_bytes = total_bytes + bytes
+                total_filecount = total_filecount + filecount
+                total_dircount = total_dircount + dircount + 1
+            elseif entry_type == 'link' then
+                -- do nothing
+            end
+        end
+    end
+
+    return total_bytes, total_filecount, total_dircount
+end
+
+CF.get_dirsize_str = function(dirpath)
+    vim.validate('dirpath', dirpath, 'string')
+    return CF.format_bytes(CF.get_dirsize(dirpath))
+end
+
 CF.trim_oil_path = function(path)
     if vim.startswith(path, 'oil://') then
         path = path:sub(7)
@@ -159,7 +201,7 @@ CF.format_num = function(n)
 end
 
 -- util/misc -------------------------------------------------------------------
-CF.get_visual_selection_text() = function()
+CF.get_visual_selection_text = function()
     local _, srow, scol = unpack(vim.fn.getpos('v'))
     local _, erow, ecol = unpack(vim.fn.getpos('.'))
     local mode = vim.fn.mode()
@@ -204,9 +246,58 @@ end
 
 CF.current_line_empty = function()
     local current_line = vim.api.nvim_get_current_line()
-    -- %g represents all printable characters except whitespace (not in Lua 5.1, but LuaJit added it)
+    -- %g represents all printable characters except whitespace (not in Lua 5.1, but LuaJIT added it)
     return #current_line == 0 or current_line:match('%g') == nil
 end
+
+CF.choose_from_func = function(func, val_if_true, val_if_false)
+    vim.validate('func', func, 'function')
+    if func() then
+        return val_if_true
+    else
+        return val_if_false
+    end
+end
+
+CF.throttle = function(fn, ms)
+    local timer = uv.new_timer()
+    local running = false
+
+    local function wrapped_fn(...)
+        if not running then
+            timer:start(ms, 0, function()
+                running = false
+            end)
+            running = true
+            pcall(vim.schedule_wrap(fn), select(1, ...))
+        end
+    end
+
+    return wrapped_fn--, timer
+end
+
+-- Test deferment methods (`{throttle,debounce}_{leading,trailing}()`)
+---@param bouncer string Bouncer function to test
+---@param ms? number Timout in ms, default 2000
+---@param firstlast? boolean Whether to use the 'other' fn call strategy
+local function test_defer(ms)
+    local timeout = ms or 2000
+
+    local bounced, timer = CF.throttle(function(i)
+        vim.cmd('echom "' .. 'tl' .. ': ' .. i .. '"')
+    end, timeout)
+    vim.print('bounced: '..vim.inspect(bounced))
+    vim.print('timer: '..vim.inspect(timer))
+
+    for i = 1, 10 do
+        bounced(i)
+        vim.schedule(function()
+            vim.cmd('echom ' .. i)
+        end)
+        vim.fn.call('wait', { 1000, 'v:false' })
+    end
+end
+test_defer(2000)
 
 -- testing ---------------------------------------------------------------------
 CF.format_time_ns = function(time_ns)
@@ -242,7 +333,7 @@ CF.benchmark = function(n_iters, func, ...)
     local after = uv.hrtime()
     local elapsed_ns = after - before
 
-    local result_str = 'Benchmark results:\n  - %s function calls\n  - %s elapsed\n  - avg execution time'
+    local result_str = 'Benchmark results:\n  - %s function calls\n  - %s elapsed\n  - %s avg execution time'
     vim.print(result_str:format(
         CF.format_num(n_iters),
         CF.format_time_ns(elapsed_ns),
