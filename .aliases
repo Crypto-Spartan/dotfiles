@@ -21,6 +21,16 @@ alias et='eza -hlmT -F -L 2 --color=always'
 alias eta='eza -ahlmT -F -L 2 --color=always --ignore-glob=".git|.memestra"'
 alias eza='eza -m'
 
+alias bathelp='bat --style="numbers,grid" --language=help'
+# allows `help cp` or `help git commit`
+help() {
+    "$@" --help 2>&1 | bathelp
+}
+# adds zsh global alias for `--help`
+if [[ $(ps -p $$ | egrep '\szsh$') != '' ]]; then
+    alias -g -- --help='--help 2>&1 | bat --plain --language=help'
+fi
+
 # pacman uninstall
 # -R: remove
 # -u: unneeded - removes pkgs that aren't required by any other pkgs
@@ -54,10 +64,14 @@ alias egrep='egrep --color=auto'
 
 #alias zam='zellij attach main'
 
+# for when i mistype nvim
+alias nivm='nvim'
 # 'nvim server loop/listen'
-alias nsl='while true; do nvim . --headless --listen localhost:<PORT>; done'
+#alias nsl='while true; do nvim . --headless --listen localhost:<PORT>; done'
 # 'netcat listen'
 alias ncl='nc -lkU /tmp/log.sock'
+
+alias curl='curl --parallel --parallel-immediate'
 
 # enable aliases to be sudo'ed
 alias sudo='sudo '
@@ -66,7 +80,7 @@ alias sudo='sudo '
 alias urlencode='python -c "import sys, urllib as ul; print(ul.quote_plus(sys.argv[1]));'
 
 # intuitive map function
-# for example, to list all dirextories that contain a certain file:
+# for example, to list all directories that contain a certain file:
 # find . -name .gitattributes | map dirname
 alias map='xargs -n1'
 
