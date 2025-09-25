@@ -96,7 +96,7 @@ CF.string_replace = function(str, old, new)
     vim.validate('str', str, 'string')
     vim.validate('old', old, 'string')
     vim.validate('new', new, 'string')
-    
+
     local s = str
     local search_start_idx = 1
 
