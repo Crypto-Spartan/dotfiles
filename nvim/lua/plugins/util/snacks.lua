@@ -69,21 +69,19 @@ return {
                 local _, git_dir = next(vim.fs.find('.git', {
                     path = current_dir,
                     upward = true,
-                    type = 'directory',
+                    type = 'directory'
                 }))
-                -- local _, git_dir = next(git_dirs)
-                -- vim.print(git_dir)
                 if git_dir == nil or git_dir:len() == 0 then
                     vim.notify('Unable to open LazyGit, not in a git directory', vim.log.levels.WARN, {
                         title = 'LazyGit Warning',
-                        timeout = 2500,
+                        timeout = 2500
                     })
                     return
                 end
                 Snacks.lazygit({
                     args = { '-p', vim.fs.dirname(git_dir) }
                 })
-            end,
+            end
         },
         { '<leader>gf',  function() Snacks.lazygit.log_file() end, desc = 'Lazygit Current File History' },
         { '<leader>gl',  function() Snacks.lazygit.log() end,      desc = 'Lazygit Log (cwd)' },
@@ -109,6 +107,7 @@ return {
         },
     },
     init = function()
+        -- snacks config on VeryLazy
         vim.api.nvim_create_autocmd('User', {
             pattern = 'VeryLazy',
             once = true,
