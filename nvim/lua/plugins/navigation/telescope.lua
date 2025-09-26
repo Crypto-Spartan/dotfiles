@@ -376,7 +376,7 @@ return {
             {
                 '<leader>fp',
                 function()
-                    local path = nvim_config_dir
+                    local path = plugins_dir
                     ts_builtin().find_files({
                         cwd = path,
                         prompt_title = 'Find Plugin Files in ' .. path,
