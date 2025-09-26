@@ -1,6 +1,6 @@
 return {
     'rcarriga/nvim-notify',
-    event = 'VeryLazy',
+    lazy = false,
     opts = {
         fps = 60,
         timeout = 4000,
