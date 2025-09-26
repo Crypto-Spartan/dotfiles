@@ -297,7 +297,7 @@ local function test_defer(ms)
         vim.fn.call('wait', { 1000, 'v:false' })
     end
 end
-test_defer(2000)
+-- test_defer(2000)
 
 -- testing ---------------------------------------------------------------------
 CF.format_time_ns = function(time_ns)
