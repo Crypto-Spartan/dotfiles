@@ -1,7 +1,6 @@
 return {
     'folke/flash.nvim',
     event = 'VeryLazy',
-    ---@type Flash.Config
     opts = {
         modes = {
             char = {
@@ -24,5 +23,5 @@ return {
         { 'r', mode = { 'o' }, function() package.loaded.flash.remote() end, desc = 'Flash Remote' },
         { 'R', mode = { 'x','o' }, function() package.loaded.flash.treesitter_search() end, desc = 'Treesitter Search' },
         { '<leader>tf', mode = { 'n','x' }, function() package.loaded.flash.toggle() end, desc = 'Toggle Flash' },
-    },
+    }
 }
