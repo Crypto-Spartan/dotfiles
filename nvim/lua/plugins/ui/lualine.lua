@@ -140,10 +140,9 @@ local function cursor_line()
     elseif total_lines == line_num then
         return line_str:format('Bot', 100)
     else
-        local line_pct = math.floor(line_num / total_lines * 100)
         return line_str:format(
             ('%d/%d'):format(line_num, total_lines),
-            line_pct
+            math.floor(line_num / total_lines * 100)
         )
     end
 end
