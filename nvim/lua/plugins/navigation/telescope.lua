@@ -39,6 +39,7 @@ return {
 
         local plugins_dir = vim.fs.joinpath(vim.fn.stdpath('data'), 'lazy')
         local nvim_config_dir = vim.fn.stdpath('config')
+        local dotfiles_dir = vim.fn.fnamemodify(nvim_config_dir, ':h')
 
         local function has_rg_program(picker_name, program)
             if vim.fn.executable(program) == 1 then
@@ -244,16 +245,27 @@ return {
             {
                 '<leader>fd',
                 function()
-                    ts_builtin().diagnostics({ bufnr = 0 })
+                    local path = dotfiles_dir
+                    ts_builtin().find_files({
+                        cwd = path,
+                        prompt_title = 'Find Files in ' .. path,
+                    })
                 end,
-                desc = 'Diagnostics - Document'
+                desc = 'Dotfiles'
             },
             {
-                '<leader>fD',
+                '<leader>fe',
+                function()
+                    ts_builtin().diagnostics({ bufnr = 0 })
+                end,
+                desc = 'Errors (Diagnostics) - Document'
+            },
+            {
+                '<leader>fE',
                 function()
                     ts_builtin().diagnostics()
                 end,
-                desc = 'Diagnostics - Workspace'
+                desc = 'Errors (Diagnostics) - Workspace'
             },
             {
                 '<leader>ff',
@@ -353,9 +365,10 @@ return {
             {
                 '<leader>fn',
                 function()
+                    local path = nvim_config_dir
                     ts_builtin().find_files({
-                        cwd = nvim_config_dir,
-                        prompt_title = 'Find Files in ' .. nvim_config_dir,
+                        cwd = path,
+                        prompt_title = 'Find Files in ' .. path,
                     })
                 end,
                 desc = 'Neovim Config Files'
@@ -363,9 +376,10 @@ return {
             {
                 '<leader>fp',
                 function()
+                    local path = nvim_config_dir
                     ts_builtin().find_files({
-                        cwd = plugins_dir,
-                        prompt_title = 'Find Plugin Files in ' .. plugins_dir,
+                        cwd = path,
+                        prompt_title = 'Find Plugin Files in ' .. path,
                     })
                 end,
                 desc = 'Plugin Files'
@@ -436,9 +450,10 @@ return {
             {
                 '<leader>sn',
                 function()
+                    local path = nvim_config_dir
                     ts_builtin().live_grep({
-                        cwd = nvim_config_dir,
-                        prompt_title = 'Grep in ' .. nvim_config_dir,
+                        cwd = path,
+                        prompt_title = 'Grep in ' .. path,
                     })
                 end,
                 desc = 'Neovim Config Files (Grep)'
@@ -459,7 +474,6 @@ return {
                     ts_builtin().live_grep({
                         cwd = plugins_dir,
                         prompt_title = 'Grep in Plugin Files',
-
                     })
                 end,
                 desc = 'Plugin Files (Grep)'
@@ -472,20 +486,6 @@ return {
             {
                 '<leader>sw',
                 function()
-                    local path = vim.custom_fn.get_nvim_cwd()
-                    ts_builtin().grep_string({
-                        cwd = path,
-                        prompt_title = 'Grep (current word) in ' .. path,
-                        word_match = '-w',
-                        initial_mode = 'normal'
-                    })
-                end,
-                desc = 'Grep current Word (nvim root dir)',
-                mode = {'n','v'}
-            },
-            {
-                '<leader>sW',
-                function()
                     local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().grep_string({
                         cwd = path,
@@ -497,15 +497,29 @@ return {
                 desc = 'Grep current Word (cwd)',
                 mode = {'n','v'}
             },
+            {
+                '<leader>sW',
+                function()
+                    local path = vim.custom_fn.get_nvim_cwd()
+                    ts_builtin().grep_string({
+                        cwd = path,
+                        prompt_title = 'Grep (current word) in ' .. path,
+                        word_match = '-w',
+                        initial_mode = 'normal'
+                    })
+                end,
+                desc = 'Grep current Word (nvim root dir)',
+                mode = {'n','v'}
+            },
         }
     end,
     config = function()
         -- 2 important keymaps in telescope are:
-        --  - insert mode: <C-/>
+        --  - insert mode: <c-/>
         --  - normal mode: ?
-        -- these open a window that shows all of the keymaps for the current telescope picker
+        --  these open a window that shows all of the keymaps for the current telescope picker
 
-        -- [ Configure Telescope ]
+        -- [[ Configure Telescope ]]
         -- see `:help telescope` & `:help telescope.setup()`
 
         local telescope = require('telescope')
@@ -526,7 +540,7 @@ return {
                     },
                     n = {
                         ['q'] = actions.close,
-                    },
+                    }
                 },
                 layout_config = {
                     cursor = { width = 0.9 },
