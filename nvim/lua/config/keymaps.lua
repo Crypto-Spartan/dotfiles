@@ -60,30 +60,50 @@ nnoremap('<leader>O', 'O<esc>', { desc = 'Create newline (above) & stay in Norma
 
 local esc_key = vim.api.nvim_replace_termcodes('<esc>', true, false, true)
 -- add print debugging for word under cursor
-local function paste_print_debug()
+local function get_paste_str(cword)
     local filetype = vim.bo.filetype
-    local cword = vim.fn.expand('<cword>')
     local paste_str
-    --print('paste_str: '..vim.inspect(paste_str))
     if filetype == 'lua' then
         paste_str = "print('"..cword..": '..vim.inspect("..cword.."))"
     elseif filetype == 'python' then
+        cword = custom_fn.string_replace(cword, [[']], [["]])
         paste_str = "print(f'{"..cword.." = }')"
-    else
+    elseif filetype == 'rust' then
+        paste_str = "dbg!(&"..cword..");"
+    end
+    return paste_str
+end
+-- add print debugging for word under cursor
+local function paste_print_debug_normal()
+    local cword = vim.fn.expand('<cword>')
+    local paste_str = get_paste_str(cword)
+    if paste_str == nil then
         return
     end
-
     vim.api.nvim_feedkeys('o'..paste_str..esc_key, 'n', false)
 end
-nnoremap('<leader>pd', paste_print_debug, { desc = 'Paste Pring Debug of word under cursor' })
+nnoremap('<leader>pd', paste_print_debug_normal, { desc = 'Paste Print Debug of word under cursor' })
+
+local function paste_print_debug_visual()
+    local selection = custom_fn.get_visual_selection_text()[1]
+    local paste_str = get_paste_str(selection)
+    if paste_str == nil then
+        return
+    end
+    vim.api.nvim_feedkeys(esc_key..'o'..paste_str..esc_key, 'n', false)
+end
+vnoremap('<leader>pd', paste_print_debug_visual, { desc = 'Paste Print Debug of visual selection' })
+
+nnoremap('<leader>po', [[o<C-r>"<esc>]], { desc = 'Paste on newline with correct indentation' })
+nnoremap('<leader>pO', [[O<C-r>"<esc>]], { desc = 'Paste on line above with correct indentation' })
 
 -- From the Vim wiki: https://vim.fandom.com/wiki/Search_and_replace_the_word_under_the_cursor
--- search and replace word under the cursor (similar to LSP rename but without LSP)
-nnoremap('<Leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>]], { desc = 'Search & Replace word under cursor in current buffer' })
+-- search & replace word under cursor (similar to LSP rename but without LSP)
+nnoremap('<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>]], { desc = 'Search & Replace word under cursor in current buffer' })
 local left_key = vim.api.nvim_replace_termcodes('<left>', true, false, true)
 local function vmode_search_and_replace()
     local selection = custom_fn.get_visual_selection_text()[1]
-    local cmd = eas_key..':%s/'..selection..'/'..selection..'/g'..left_key:rep(2)
+    local cmd = esc_key..':%s/'..selection..'/'..selection..'/g'..left_key:rep(2)
     vim.api.nvim_feedkeys(cmd, 'n', false)
 end
 vnoremap('<leader>r', vmode_search_and_replace, { desc = 'Search & Replace visual selection in current buffer' })
@@ -110,13 +130,23 @@ vim.keymap.set('n', 'yc', 'yygccp', { desc = 'duplicate line & comment out first
 -- select recently pasted, yanked, or changed text
 nnoremap('gy', "`[v`]", { desc = 'Select recently pasted, yanked, or changed text' })
 
+local function get_timestamp_str()
+    local timestamp_str = ('%s UTC -- '):format(os.date('!%Y-%m-%d %H:%M:%S'))
+    -- local filepath = vim.fn.expand('%:p')
+    -- -- make timestamp a markdown bullet if in <dir> and file ends in `.md`
+    -- if filepath:find('<dir>', 1, true) ~= nil and filepath:sub(-3) == '.md' then
+    --     timestamp_str = '- '..timestamp_str
+    -- end
+    return timestamp_str
+end
+
 -- insert timestamp
 local function insert_timestamp()
-    local timestamp_str = ('%s UTC -- '):format(os.date('!%Y-%m-%d %H:%M:%S'))
+    local timestamp_str = get_timestamp_str()
     local line = vim.api.nvim_get_current_line()
     local cursor_pos = vim.api.nvim_win_get_cursor(0)
-    vim.api.nvim_set_current_line(timestamp_str..line)
     cursor_pos[2] = cursor_pos[2] + #timestamp_str
+    vim.api.nvim_set_current_line(timestamp_str..line)
     vim.api.nvim_win_set_cursor(0, cursor_pos)
 end
 vim.keymap.set({'n','i','v','x'}, '<F5>', insert_timestamp, { desc = 'Insert Timestamp', nowait = true })
@@ -164,7 +194,7 @@ local dd_no_blackhole_key = vim.api.nvim_replace_termcodes([["_dd]], true, false
 nnoremap('a',  make_change_blankline_key_func(cc_no_blackhole_key, 'a'),  { nowait = true })
 nnoremap('A',  make_change_blankline_key_func(cc_no_blackhole_key, 'A'),  { nowait = true })
 -- delete line to black hole register if it's blank
-nnoremap('dd', make_change_blankline_key_func(cc_no_blackhole_key, 'dd'), { nowait = true })
+nnoremap('dd', make_change_blankline_key_func(dd_no_blackhole_key, 'dd'), { nowait = true })
 
 -- automatically add semicolon or comma at the end of the line in insert mode
 inoremap(';;', '<esc>A;')
@@ -178,4 +208,4 @@ local function visual_line_mode_block_insert()
     end
     vim.api.nvim_feedkeys('I', 'n', false)
 end
-vnoremap('I', visual_line_mode_block_insert, { desc = 'Block Insert (from Visual Line mode)' })
+vnoremap('I', visual_line_mode_block_insert, { desc = 'Block Insert (from Visual Line Mode)' })
