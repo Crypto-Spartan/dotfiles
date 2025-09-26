@@ -1,5 +1,6 @@
 return {
     { import = 'plugins.autocomplete' },
+    { import = 'plugins.custom' },
     { import = 'plugins.lang_specific' },
     { import = 'plugins.lsp' },
     { import = 'plugins.navigation' },
