@@ -85,12 +85,9 @@ done
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(alias-finder aliases command-not-found copybuffer copyfile copypath encode64 eza genpass git-commit isodate nmap pip procs python rsync rust safe-paste ssh ssh-agent systemd thefuck timer vi-mode virtualenv zellij zoxide)
+plugins=(aliases command-not-found copybuffer copyfile copypath encode64 eza genpass git-commit isodate nmap pip procs python rsync rust safe-paste ssh ssh-agent systemd thefuck timer vi-mode virtualenv zellij zoxide)
 
 export ZSH_COMPDUMP=$HOME/.cache/oh-my-zsh/.zcompdump-$HOST-$ZSH_VERSION
-
-# alias-finder
-zstyle :omz:plugins:alias-finder autoload yes
 
 # eza
 zstyle :omz:plugins:eza git-status yes
