@@ -54,7 +54,7 @@ return {
         zen   = { enabled = false },
         styles = {
             notification = {
-                wo = { wrap = true } -- Wrap notifications
+                wo = { wrap = true } -- wrap notifications
             }
         }
     },
