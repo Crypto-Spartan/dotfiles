@@ -69,7 +69,7 @@ vim.api.nvim_create_autocmd('FileChangedShellPost', {
 -- reload treesitter queries after saving query file
 vim.api.nvim_create_autocmd('BufWrite', {
     group = vim.api.nvim_create_augroup('TSReset', { clear = true }),
-    pattern = { '*.scm' },
+    pattern = '*.scm',
     desc = 'Reload TS Queries after saving a *.scm file',
     callback = function()
         require('nvim-treesitter.query').invalidate_query_cache()
@@ -82,7 +82,7 @@ vim.api.nvim_create_autocmd('BufWrite', {
 -- reload plugin on save
 vim.api.nvim_create_autocmd('BufWritePost', {
     group = vim.api.nvim_create_augroup('LuaReloadModule', { clear = true }),
-    pattern = { '*.lua' },
+    pattern = '*.lua',
     desc = 'Reload module after saving *.lua file',
     callback = function()
         local lines = vim.api.nvim_buf_get_lines(0, 0, 3, false)
