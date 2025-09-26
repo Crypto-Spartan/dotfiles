@@ -34,24 +34,48 @@ return {
                 vim.keymap.del('n', 'grr')          -- vim.lsp.buf.references()
                 vim.keymap.del('n', 'grt')          -- vim.lsp.buf.type_definition()
                 -- Find references for the word under your cursor
-                map('gr', require('telescope.builtin').lsp_references, 'Goto References')
+                map(
+                    'gr',
+                    function()
+                        require('telescope.builtin').lsp_references({ initial_mode = 'normal' })
+                    end,
+                    'Goto References'
+                )
 
                 -- Jump to the implementation of the word under your cursor.
                 --  Useful when your language has ways of declaring types without an actual implementation.
-                map('gi', require('telescope.builtin').lsp_implementations, 'Goto Implementation')
+                map(
+                    'gi',
+                    function()
+                        require('telescope.builtin').lsp_implementations({ initial_mode = 'normal' })
+                    end,
+                    'Goto Implementation'
+                )
 
                 -- Jump to the type of the word under your cursor.
                 --  Useful when you're not sure what type a variable is and you want to see
                 --  the definition of its *type*, not where it was *defined*.
-                map('<leader>gt', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
+                map(
+                    '<leader>gt',
+                    function()
+                        require('telescope.builtin').lsp_type_definitions({ initial_mode = 'normal' })
+                    end,
+                    'Type Definition'
+                )
 
                 -- Fuzzy find all the symbols in your current document.
                 --  Symbols are things like variables, functions, types, etc.
-                map('<leader>fs', require('telescope.builtin').lsp_document_symbols, 'Find Symbols (Document)')
+                map(
+                    '<leader>fs',
+                    function()
+                        require('telescope.builtin').lsp_document_symbols({ initial_mode = 'normal' })
+                    end,
+                    'Find Symbols (Document)'
+                )
 
                 -- Fuzzy find all the symbols in your current workspace.
                 --  Similar to document symbols, except searches over your entire project.
-                map('<leader>fS', require('telescope.builtin').lsp_document_symbols, 'Find Symbols (Workspace)')
+                map('<leader>fS', require('telescope.builtin').lsp_document_symbols({ initial_mode = 'normal' }), 'Find Symbols (Workspace)')
 
                 map('<leader>lr', vim.lsp.buf.rename, 'Rename')
                 map('<leader>la', vim.lsp.buf.code_action, 'Action', {'n','x'})
