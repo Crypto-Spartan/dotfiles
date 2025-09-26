@@ -16,7 +16,7 @@ return {
         vim.keymap.del('n', 'grn')          -- vim.lsp.buf.rename()
         vim.keymap.del('n', 'grr')          -- vim.lsp.buf.references()
         vim.keymap.del('n', 'grt')          -- vim.lsp.buf.type_definition()
-        
+
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lspconfig-lsp-attach', { clear = true }),
             callback = function(event)
@@ -76,7 +76,13 @@ return {
 
                 -- Fuzzy find all the symbols in your current workspace.
                 --  Similar to document symbols, except searches over your entire project.
-                map('<leader>fS', require('telescope.builtin').lsp_document_symbols({ initial_mode = 'normal' }), 'Find Symbols (Workspace)')
+                map(
+                    '<leader>fS',
+                    function()
+                        require('telescope.builtin').lsp_document_symbols({ initial_mode = 'normal' })
+                    end,
+                    'Find Symbols (Workspace)'
+                )
 
                 map('<leader>lr', vim.lsp.buf.rename, 'Rename')
                 map('<leader>la', vim.lsp.buf.code_action, 'Action', {'n','x'})
