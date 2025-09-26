@@ -99,7 +99,7 @@ zstyle :omz:plugins:eza icons      yes
 zstyle :omz:plugins:eza show-group no
 
 # ssh-agent
-zstyle :omz:plugins:ssh-agent lifetime 1h
+# zstyle :omz:plugins:ssh-agent lifetime 1h
 zstyle :omz:plugins:ssh-agent lazy     yes
 
 source $ZSH/oh-my-zsh.sh
