@@ -108,9 +108,9 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 -- add line numbers when in neovim help docs
 -- see `:help nvim_create_autocmd()`
 vim.api.nvim_create_autocmd('FileType', {
-    desc = 'Add line numbers in neovim docs/help files',
     group = vim.api.nvim_create_augroup('DocsLineNums', { clear = true }),
     pattern = 'help',
+    desc = 'Add line numbers in neovim docs/help files',
     callback = function()
         vim.opt.number = true
         vim.opt.relativenumber = true
