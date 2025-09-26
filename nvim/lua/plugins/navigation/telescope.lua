@@ -248,7 +248,7 @@ return {
                     local path = dotfiles_dir
                     ts_builtin().find_files({
                         cwd = path,
-                        prompt_title = 'Find Files in ' .. path,
+                        prompt_title = 'Find Files (dotfiles) in ' .. path,
                     })
                 end,
                 desc = 'Dotfiles'
@@ -258,7 +258,7 @@ return {
                 function()
                     ts_builtin().diagnostics({ bufnr = 0 })
                 end,
-                desc = 'Errors (Diagnostics) - Document'
+                desc = 'Errors (Diagnostics) - Current Buffer'
             },
             {
                 '<leader>fE',
@@ -273,7 +273,7 @@ return {
                     local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().find_files({
                         cwd = path,
-                        prompt_title = 'Find Files in ' .. path,
+                        prompt_title = 'Find Files (nvim root dir) in ' .. path,
                     })
                 end,
                 desc = 'Files (nvim root dir)'
@@ -284,7 +284,7 @@ return {
                     local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().find_files({
                         cwd = path,
-                        prompt_title = 'Find Files in ' .. path,
+                        prompt_title = 'Find Files (cwd) in ' .. path,
                     })
                 end,
                 desc = 'Files (cwd)'
@@ -418,7 +418,7 @@ return {
                     local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep in ' .. path,
+                        prompt_title = 'Grep (nvim root dir) in ' .. path,
                     })
                 end,
                 desc = 'Grep (nvim root dir)'
@@ -429,7 +429,7 @@ return {
                     local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep in ' .. path,
+                        prompt_title = 'Grep (cwd) in ' .. path,
                     })
                 end,
                 desc = 'Grep (cwd)'
@@ -471,9 +471,10 @@ return {
             {
                 '<leader>sp',
                 function()
+                    local path = plugins_dir
                     ts_builtin().live_grep({
-                        cwd = plugins_dir,
-                        prompt_title = 'Grep in Plugin Files',
+                        cwd = path,
+                        prompt_title = 'Grep (Plugin Files) in ' .. path,
                     })
                 end,
                 desc = 'Plugin Files (Grep)'
@@ -489,7 +490,7 @@ return {
                     local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().grep_string({
                         cwd = path,
-                        prompt_title = 'Grep (current word) in ' .. path,
+                        prompt_title = 'Grep (current word; cwd) in ' .. path,
                         word_match = '-w',
                         initial_mode = 'normal'
                     })
@@ -503,7 +504,7 @@ return {
                     local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().grep_string({
                         cwd = path,
-                        prompt_title = 'Grep (current word) in ' .. path,
+                        prompt_title = 'Grep (current word; nvim root dir) in ' .. path,
                         word_match = '-w',
                         initial_mode = 'normal'
                     })
