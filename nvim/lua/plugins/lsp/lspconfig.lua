@@ -10,6 +10,13 @@ return {
         'hrsh7th/cmp-nvim-lsp',
     },
     init = function()
+        -- delete keymaps that conflict with 'gr'
+        vim.keymap.del({'n','x'}, 'gra')    -- vim.lsp.buf.code_action()
+        vim.keymap.del('n', 'gri')          -- vim.lsp.buf.implementation()
+        vim.keymap.del('n', 'grn')          -- vim.lsp.buf.rename()
+        vim.keymap.del('n', 'grr')          -- vim.lsp.buf.references()
+        vim.keymap.del('n', 'grt')          -- vim.lsp.buf.type_definition()
+        
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lspconfig-lsp-attach', { clear = true }),
             callback = function(event)
@@ -27,12 +34,6 @@ return {
                 --  For example, in C this would take you to the header.
                 map('gD', vim.lsp.buf.declaration, 'Goto Declaration')
 
-                -- delete keymaps that conflict with 'gr'
-                vim.keymap.del({'n','x'}, 'gra')    -- vim.lsp.buf.code_action()
-                vim.keymap.del('n', 'gri')          -- vim.lsp.buf.implementation()
-                vim.keymap.del('n', 'grn')          -- vim.lsp.buf.rename()
-                vim.keymap.del('n', 'grr')          -- vim.lsp.buf.references()
-                vim.keymap.del('n', 'grt')          -- vim.lsp.buf.type_definition()
                 -- Find references for the word under your cursor
                 map(
                     'gr',
