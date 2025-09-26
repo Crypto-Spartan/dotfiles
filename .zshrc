@@ -5,6 +5,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# HISTSIZE set in .exports
+export SAVEHIST=$HISTSIZE
+export HISTFILE=~/.zsh_history
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
 
@@ -81,7 +85,9 @@ done
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(alias-finder aliases command-not-found copybuffer copyfile copypath encode64 eza genpass git-commit isodate nmap pip procs python rsync rust safe-paste ssh ssh-agent systemd thefuck timer vi-mode virtualenv zoxide)
+plugins=(alias-finder aliases command-not-found copybuffer copyfile copypath encode64 eza genpass git-commit isodate nmap pip procs python rsync rust safe-paste ssh ssh-agent systemd thefuck timer vi-mode virtualenv zellij zoxide)
+
+export ZSH_COMPDUMP=$HOME/.cache/oh-my-zsh/.zcompdump-$HOST-$ZSH_VERSION
 
 # alias-finder
 zstyle :omz:plugins:alias-finder autoload yes
@@ -97,6 +103,19 @@ zstyle :omz:plugins:ssh-agent lifetime 1h
 zstyle :omz:plugins:ssh-agent lazy     yes
 
 source $ZSH/oh-my-zsh.sh
+
+unalias 1
+unalias 2
+unalias 3
+unalias 4
+unalias 5
+unalias 6
+unalias 7
+unalias 8
+unalias 9
+unalias l
+unalias lsa
+# unalias _ # alias for sudo
 
 alias -- -='z -'
 alias aliases='als'
