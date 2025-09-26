@@ -34,7 +34,7 @@ local function get_buf_count()
     end
 
     -- result = 'Buffers: ' .. buf_count
-    local result = ''
+    local result
     if buf_count == 0 and oil_count > 0 then
         result = 'Oil Buffers: ' .. oil_count
     elseif buf_count > 0 and oil_count == 0 then
@@ -73,7 +73,6 @@ local function get_buf_count()
     --
     -- return len(result)
 end
--- get_buf_count()
 
 local filename = {
     'filename',
@@ -83,70 +82,123 @@ local fileformat = {
     'fileformat',
     padding = { left = 1, right = 2 }
 }
+
+local custom_fn = vim.custom_fn
+
+local function memory_usage()
+    local memory_bytes = vim.uv.resident_set_memory()
+    return ('RAM Usage: %s'):format(custom_fn.format_bytes(memory_bytes))
+end
+
+local function filesize()
+    local size = math.max(vim.fn.line2byte(vim.fn.line('$') + 1) - 1, 0)
+    return custom_fn.format_bytes(size)
+end
+
 local function cursor_location()
-    -- local status, cursor_pos = pcall(vim.api.nvim_win_get_cursor, 0)
-    -- vim.notify('status: '..status)
-    -- vim.notify('cursor_pos: '..vim.inspect(cursor_pos))
-    -- if not status then
-    --     return 'test'
-    -- end
-    local cursor_pos = vim.api.nvim_win_get_cursor(0)
-    -- print('cursor_pos: '..vim.inspect(cursor_pos))
-    local line, col = cursor_pos[1], cursor_pos[2] + 1
-    -- print('line: '..line)
-    -- print('col: '..col)
-    local total_lines = vim.api.nvim_buf_line_count(0)
-    -- print('total_lines: '..total_lines)
-    local line_text = vim.api.nvim_buf_get_lines(0, line-1, line, false)
-    local line_len = line_text[1]:len()
-    -- print('line_text: '..line_text)
-    local line_pct = (line / total_lines) * 100
-    local col_pct = (col / line_len) * 100
-    local location_str = ('Line: %d/%d (%2d%%) | Col: %d/%d (%2d%%)'):format(line, total_lines, line_pct, col, line_len, col_pct)
-    -- print('location_str: '..location_str)
-    return location_str
+    local total_lines = vim.fn.line('$')
+    if total_lines <= 0 then
+        return ''
+    end
+
+    local line_str = 'Line: %s'
+    local line_num = vim.fn.line('.')
+    if total_lines == 1 then
+        line_str = line_str:format('Top')
+    elseif total_lines == line_num then
+        line_str = line_str:format('Bot')
+    else
+        local line_pct = math.floor(line_num / total_lines * 100)
+        line_str = line_str:format(
+            ('%d/%d (%d%%%%)'):format(line_num, total_lines, line_pct)
+        )
+    end
+
+    local line_len = vim.fn.charcol('$')
+    if line_len <= 0 then
+        return line_str
+    end
+
+    local col_num = vim.fn.charcol('.')
+    local col_pct = math.floor(col_num / line_len * 100)
+    local col_str = ('Col: %d/%d (%d%%%%)'):format(col_num, line_len, col_pct)
+
+    local ret_str = ('%s | %s'):format(line_str, col_str)
+    return ret_str
+end
+
+local function cursor_line()
+    local total_lines = vim.fn.line('$')
+    if total_lines <= 0 then
+        return ''
+    end
+
+    local line_str = 'Line: %s (%d%%%%)'
+    local line_num = vim.fn.line('.')
+    if total_lines == 1 then
+        return line_str:format('Top', 0)
+    elseif total_lines == line_num then
+        return line_str:format('Bot', 100)
+    else
+        local line_pct = math.floor(line_num / total_lines * 100)
+        return line_str:format(
+            ('%d/%d'):format(line_num, total_lines),
+            line_pct
+        )
+    end
+end
+
+local function cursor_col()
+    local line_len = vim.fn.charcol('$')
+    if line_len <= 0 then
+        return ''
+    end
+
+    local col_num = vim.fn.charcol('.')
+    local col_pct = math.floor(col_num / line_len * 100)
+    return ('Col: %d/%d (%d%%%%)'):format(col_num, line_len, col_pct)
+end
+
+local function progress()
+    local cur = vim.fn.line('.')
+    -- print('cur: '..vim.inspect(cur))
+    local total = vim.fn.line('$')
+    -- print('total: '..vim.inspect(total))
+    if cur == 1 then
+        return 'Top'
+    elseif cur == total then
+        return 'Bot'
+    else
+        return string.format('%2d%%%%', math.floor(cur / total * 100))
+    end
+end
+
+local function location()
+  local line = vim.fn.line('.')
+  local col = vim.fn.charcol('.')
+  return string.format('%3d:%-2d %d %d', line, col, vim.fn.line('$'), vim.fn.charcol('$'))
 end
 
 return {
     'nvim-lualine/lualine.nvim',
-    enabled = false,
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     event = 'VeryLazy',
-    -- config = function()
-    --     local str = cursor_location()
-    --     print(str)
-    --     vim.notify(str)
-    -- end,
     opts = {
-        sections = {
-            lualine_a = { 'mode', 'filesize' },
-            lualine_b = { 'branch', 'diff', 'diagnostics', 'lsp_status' },
-            lualine_c = { 'filename' },
-            lualine_x = { 'encoding', fileformat, 'filetype' },
-            -- lualine_x = { 'encoding', 'fileformat', 'filetype' },
-            lualine_y = { get_buf_count },
-            -- lualine_z = { cursor_location },
-            lualine_z = { 'progress', 'location' },
+        options = {
+            -- section_separators = { left = '', right = '' },
+            -- component_separators = { left = '', right = '' },
+            component_separators = '',
+            section_separators = { left = '', right = '' },
         },
-        -- inactive_sections = {
-        --     lualine_a = {},
-        --     lualine_b = {},
-        --     lualine_c = { 'filename' },
-        --     lualine_x = { cursor_location },
-        --     lualine_y = {},
-        --     lualine_z = {},
-        -- }
+        sections = {
+            lualine_a = { 'mode' },
+            lualine_b = { 'branch', 'diff', 'diagnostics', 'lsp_status' },
+            lualine_c = { filename },
+            -- lualine_x = { get_buf_count, memory_usage },
+            lualine_x = { memory_usage },
+            lualine_y = { 'encoding', fileformat, 'filetype', filesize },
+            lualine_z = { cursor_line, cursor_col },
+        },
+        extensions = { 'aerial', 'fzf' , 'lazy', 'man', 'mason', 'trouble' },
     }
 }
---     'nvim-lualine/lualine.nvim',
---     event = 'VeryLazy',
---     opts = {
---         icons_enabled = false,
---         sections = {
---             lualine_c = { 'filename', 'filesize' },
---             lualine_x = { 'encoding', 'filetype' },
---             lualine_y = { get_buf_count },
---             lualine_z = { 'progress', 'location' },
---         },
---     }
--- }

@@ -254,9 +254,9 @@ return {
                 line_right = '<M-S-l>',
             }
         })
-        require('mini.statusline').setup({
-            use_icons = vim.g.have_nerd_font
-        })
+        -- require('mini.statusline').setup({
+        --     use_icons = vim.g.have_nerd_font
+        -- })
 
         require('mini.trailspace').setup()
     end
