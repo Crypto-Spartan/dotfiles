@@ -11,15 +11,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end
 })
 
-vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePre' }, {
-    group = vim.api.nvim_create_augroup('SetFileformat', { clear = true }),
-    desc = 'Always set fileformat to unix',
-    callback = function()
-        if vim.bo.modifiable then
-            vim.bo.fileformat = 'unix'
-        end
-    end
-})
+-- vim.api.nvim_create_autocmd({ 'BufReadPost', 'BufWritePre' }, {
+--     group = vim.api.nvim_create_augroup('SetFileformat', { clear = true }),
+--     desc = 'Always set fileformat to unix',
+--     callback = function()
+--         if vim.bo.modifiable then
+--             vim.bo.fileformat = 'unix'
+--         end
+--     end
+-- })
 
 local parsed_formatoptions = vim.api.nvim_parse_cmd('set formatoptions-=cro', {})
 local parsed_formatoptions_local = vim.api.nvim_parse_cmd('setlocal formatoptions-=cro', {})
