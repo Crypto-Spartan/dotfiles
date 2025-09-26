@@ -12,6 +12,6 @@ return {
     --     })
     -- end,
     opts = {
-        root_key = 'S',
+        root_key = 'S'
     }
 }
