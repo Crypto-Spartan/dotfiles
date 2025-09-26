@@ -27,6 +27,13 @@ return {
                 --  For example, in C this would take you to the header.
                 map('gD', vim.lsp.buf.declaration, 'Goto Declaration')
 
+                -- delete keymaps that conflict with 'gr'
+                vim.keymap.del({'n','x'}, 'gra')    -- vim.lsp.buf.code_action()
+                vim.keymap.del('n', 'gri')          -- vim.lsp.buf.implementation()
+                vim.keymap.del('n', 'grn')          -- vim.lsp.buf.rename()
+                vim.keymap.del('n', 'grr')          -- vim.lsp.buf.references()
+                vim.keymap.del('n', 'grt')          -- vim.lsp.buf.type_definition()
+                -- Find references for the word under your cursor
                 map('gr', require('telescope.builtin').lsp_references, 'Goto References')
 
                 -- Jump to the implementation of the word under your cursor.
@@ -36,7 +43,7 @@ return {
                 -- Jump to the type of the word under your cursor.
                 --  Useful when you're not sure what type a variable is and you want to see
                 --  the definition of its *type*, not where it was *defined*.
-                map('<leader>gt', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
+                map('gt', require('telescope.builtin').lsp_type_definitions, 'Type Definition')
 
                 -- Fuzzy find all the symbols in your current document.
                 --  Symbols are things like variables, functions, types, etc.
