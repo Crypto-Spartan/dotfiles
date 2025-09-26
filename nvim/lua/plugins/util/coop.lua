@@ -1,4 +1,4 @@
 return {
     'gregorias/coop.nvim',
-    lazy = true,
+    lazy = true
 }
