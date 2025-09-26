@@ -1,61 +1,67 @@
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.opt.expandtab = true
+local opt = vim.opt
 
--- enable 24-bit color
-vim.opt.termguicolors = true
+opt.tabstop       = 4     -- number of spaces for a tab
+opt.softtabstop   = 4     -- number of spaces for a tab when editing
+opt.shiftwidth    = 4     -- number of spaces for autoindent
+opt.autoindent    = true  -- copy indent from current line when starting a new line
+opt.smartindent   = true  -- smart autoindenting when starting a new line
+opt.breakindent   = true  -- every wrapped line will continue visually indented
+opt.expandtab     = true  -- use spaces instead of tabs
+opt.termguicolors = true  -- enable 24-bit color
 
 -- linenumbers
-vim.opt.number = true
-vim.opt.relativenumber = true
+opt.number = true
+opt.relativenumber = true
 
--- schedule the setting after `UiEnter` because it can increase startup time
+-- schedule the setting after `UIEnter` because it can increase startup time
 vim.defer_fn(function()
-    vim.opt.clipboard = 'unnamedplus'
+    opt.clipboard = 'unnamedplus'
 end, 1000)
-vim.opt.breakindent = true
-vim.opt.smartindent = true
-vim.opt.undofile = true
-
-vim.opt.hlsearch = true
-vim.opt.incsearch = true
+-- vim.g.clipboard = {
+--     name = 'OSC 52',
+--     copy = {
+--         ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+--         ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+--     },
+--     paste = {
+--         ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+--         ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+--     }
+-- }
+opt.undofile    = true     -- enable persistent undo
+opt.hlsearch    = true     -- highlight search matches
+opt.incsearch   = true     -- show search matches live, as it's typed
+opt.inccommand  = 'split'  -- preview substitutions live, as it's typed
 
 -- case-insensitive searching UNLESS \C or one or more capital letters in the search term
-vim.opt.ignorecase = true
-vim.opt.smartcase = true
+opt.ignorecase = true
+opt.smartcase  = true
 
 -- sets how neovim will display certain whitespace characters in the editor
---  see `:help 'list'` and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+-- see `:help 'list'` and `:help 'listchars'`
+opt.list = true
+opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
 
--- preview substitutions live, as you type!
-vim.opt.inccommand = 'split'
+opt.jumpoptions = 'stack,view'
 
-vim.opt.jumpoptions = 'stack,view'
-
--- decrease update time
-vim.opt.updatetime = 1000
--- show which line cursor is on
-vim.opt.cursorline = true
--- minimum num of screen lines to keep above & below cursor
-vim.opt.scrolloff = 10
-
--- ask to save files if taking an operation that would fail due to unsaved changes in the buffer
-vim.opt.confirm = true
+opt.updatetime = 1000  -- decrease update time
+opt.cursorline = true  -- show which line cursor is on
+opt.scrolloff = 10     -- minimum num of screen lines to keep above & below cursor
+opt.confirm = true     -- ask to save files if taking an operation that would fail due to unsaved changes in the buffer
 
 -- vim.g.have_nerd_font = string.find(vim.v.servername, 'localhost:') ~= nil
 vim.g.have_nerd_font = true
 
 if vim.fn.executable('rg') == 1 then
-    vim.opt.grepprg = 'rg -u --hidden --glob "!.git" --vimgrep --no-heading --smart-case'
-    vim.opt.grepformat = '%f:%l:%c:%m'
+    opt.grepprg = 'rg --no-ignore --hidden --glob "!.git" --vimgrep --no-heading --smart-case'
+    opt.grepformat = '%f:%l:%c:%m'
 end
 
 vim.filetype.add({
     filename = {
+        ['.aliases']              = 'sh',
         ['.bashrc_zellij']        = 'sh',
+        ['.exports']              = 'sh',
         ['.gitattributes_global'] = '.gitattributes',
         ['.gitconfig_global']     = '.gitconfig',
     }
