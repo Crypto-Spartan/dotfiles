@@ -417,6 +417,18 @@ return {
 
             -- search
             {
+                '<leader>sd',
+                function()
+                    local path = dotfiles_dir
+                    ts_builtin().live_grep({
+                        cwd = path,
+                        prompt_title = 'Grep in (dotfiles) ' .. path,
+                        vimgrep_arguments = vim.o.grepprg
+                    })
+                end,
+                desc = 'Dotfiles (Grep)'
+            },
+            {
                 '<leader>sf',
                 function()
                     local path = vim.custom_fn.get_nvim_cwd()
