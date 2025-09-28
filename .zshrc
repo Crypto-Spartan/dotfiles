@@ -5,6 +5,10 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+for file in ~/.dotfiles/.{exports}; do
+    [ -r $file ] && [ -f $file ] && source $file
+done
+
 # HISTSIZE set in .exports
 export SAVEHIST=$HISTSIZE
 export HISTFILE=~/.zsh_history
@@ -75,10 +79,6 @@ zstyle :omz:update mode reminder  # just remind me to update when it's time
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
-
-for file in ~/.dotfiles/.{exports}; do
-    [ -r $file ] && [ -f $file ] && source $file
-done
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
