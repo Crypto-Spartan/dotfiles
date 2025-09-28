@@ -39,7 +39,7 @@ return {
 
         local plugins_dir = vim.fs.joinpath(vim.fn.stdpath('data'), 'lazy')
         local nvim_config_dir = vim.fn.stdpath('config')
-        local dotfiles_dir = vim.fn.fnamemodify(nvim_config_dir, ':h')
+        local dotfiles_dir = vim.env.DOTFILES_PATH
 
         local function has_rg_program(picker_name, program)
             if vim.fn.executable(program) == 1 then
