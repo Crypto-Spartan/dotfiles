@@ -116,7 +116,7 @@ return {
             end
 
             local conf = require('telescope.config').values
-            local vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
+            local vimgrep_arguments = vim.o.grepprg or conf.vimgrep_arguments
             if not has_rg_program('live_grep', vimgrep_arguments[1]) then
                 return
             end
@@ -423,6 +423,7 @@ return {
                     ts_builtin().live_grep({
                         cwd = path,
                         prompt_title = 'Grep (nvim root dir) in ' .. path,
+                        vimgrep_arguments = vim.o.grepprg
                     })
                 end,
                 desc = 'Grep (nvim root dir)'
@@ -434,6 +435,7 @@ return {
                     ts_builtin().live_grep({
                         cwd = path,
                         prompt_title = 'Grep (cwd) in ' .. path,
+                        vimgrep_arguments = vim.o.grepprg
                     })
                 end,
                 desc = 'Grep (cwd)'
@@ -458,6 +460,7 @@ return {
                     ts_builtin().live_grep({
                         cwd = path,
                         prompt_title = 'Grep in ' .. path,
+                        vimgrep_arguments = vim.o.grepprg
                     })
                 end,
                 desc = 'Neovim Config Files (Grep)'
@@ -468,6 +471,7 @@ return {
                     ts_builtin().live_grep({
                         grep_open_files = true,
                         prompt_title = 'Grep in Open Files',
+                        vimgrep_arguments = vim.o.grepprg
                     })
                 end,
                 desc = 'Open Files (Grep)'
@@ -479,6 +483,7 @@ return {
                     ts_builtin().live_grep({
                         cwd = path,
                         prompt_title = 'Grep (Plugin Files) in ' .. path,
+                        vimgrep_arguments = vim.o.grepprg
                     })
                 end,
                 desc = 'Plugin Files (Grep)'
@@ -496,7 +501,8 @@ return {
                         cwd = path,
                         prompt_title = 'Grep (current word; cwd) in ' .. path,
                         word_match = '-w',
-                        initial_mode = 'normal'
+                        initial_mode = 'normal',
+                        vimgrep_arguments = vim.o.grepprg
                     })
                 end,
                 desc = 'Grep current Word (cwd)',
@@ -510,7 +516,8 @@ return {
                         cwd = path,
                         prompt_title = 'Grep (current word; nvim root dir) in ' .. path,
                         word_match = '-w',
-                        initial_mode = 'normal'
+                        initial_mode = 'normal',
+                        vimgrep_arguments = vim.o.grepprg
                     })
                 end,
                 desc = 'Grep current Word (nvim root dir)',
