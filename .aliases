@@ -31,6 +31,7 @@ if [[ $(ps -p $$ | egrep '\szsh$') != '' ]]; then
     alias -g -- --help='--help 2>&1 | bat --plain --language=help'
 fi
 
+alias pacman='sudo pacman'
 # pacman uninstall
 # -R: remove
 # -u: unneeded - removes pkgs that aren't required by any other pkgs
@@ -39,6 +40,8 @@ fi
 alias pcrm='pacman -Runs'
 # pacman install
 alias pci='pacman -S'
+# pacman update
+alias pcup='pacman -Syu'
 
 # aliases for git
 alias gs='git status'
