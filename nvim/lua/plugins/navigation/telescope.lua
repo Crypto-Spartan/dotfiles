@@ -249,6 +249,7 @@ return {
                     ts_builtin().find_files({
                         cwd = path,
                         prompt_title = 'Find Files (dotfiles) in ' .. path,
+                        hidden = true  -- show hidden files
                     })
                 end,
                 desc = 'Dotfiles'
@@ -274,6 +275,7 @@ return {
                     ts_builtin().find_files({
                         cwd = path,
                         prompt_title = 'Find Files (nvim root dir) in ' .. path,
+                        hidden = true  -- show hidden files
                     })
                 end,
                 desc = 'Files (nvim root dir)'
@@ -285,6 +287,7 @@ return {
                     ts_builtin().find_files({
                         cwd = path,
                         prompt_title = 'Find Files (cwd) in ' .. path,
+                        hidden = true  -- show hidden files
                     })
                 end,
                 desc = 'Files (cwd)'
@@ -369,6 +372,7 @@ return {
                     ts_builtin().find_files({
                         cwd = path,
                         prompt_title = 'Find Files in ' .. path,
+                        hidden = true  -- show hidden files
                     })
                 end,
                 desc = 'Neovim Config Files'
