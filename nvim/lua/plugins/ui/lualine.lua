@@ -41,8 +41,6 @@ local function get_buf_count()
         result = 'Buffers: ' .. buf_count
     elseif buf_count > 0 and oil_count > 0 then
         result = ('Oil Buffers: %d | Buffers: %d'):format(oil_count, buf_count)
-    else
-        result = nil
     end
 
     -- print(result)
@@ -87,7 +85,7 @@ local custom_fn = vim.custom_fn
 
 local function memory_usage()
     local memory_bytes = vim.uv.resident_set_memory()
-    return ('RAM Usage: %s'):format(custom_fn.format_bytes(memory_bytes))
+    return 'RAM Usage: ' .. custom_fn.format_bytes(memory_bytes)
 end
 
 local function filesize()
@@ -196,8 +194,8 @@ return {
             -- lualine_x = { get_buf_count, memory_usage },
             lualine_x = { memory_usage },
             lualine_y = { 'encoding', fileformat, 'filetype', filesize },
-            lualine_z = { cursor_line, cursor_col },
+            lualine_z = { cursor_line, cursor_col }
         },
-        extensions = { 'aerial', 'fzf' , 'lazy', 'man', 'mason', 'trouble' },
+        extensions = { 'aerial', 'fzf' , 'lazy', 'man', 'mason', 'trouble' }
     }
 }
