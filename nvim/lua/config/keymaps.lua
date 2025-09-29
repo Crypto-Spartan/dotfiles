@@ -97,7 +97,7 @@ vnoremap('<leader>pd', paste_print_debug_visual, { desc = 'Paste Print Debug of 
 nnoremap('<leader>po', [[o<C-r>"<esc>]], { desc = 'Paste on newline with correct indentation' })
 nnoremap('<leader>pO', [[O<C-r>"<esc>]], { desc = 'Paste on line above with correct indentation' })
 
--- From the Vim wiki: https://vim.fandom.com/wiki/Search_and_replace_the_word_under_the_cursor
+-- from the vim wiki: https://vim.fandom.com/wiki/Search_and_replace_the_word_under_the_cursor
 -- search & replace word under cursor (similar to LSP rename but without LSP)
 nnoremap('<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>]], { desc = 'Search & Replace word under cursor in current buffer' })
 local left_key = vim.api.nvim_replace_termcodes('<left>', true, false, true)
@@ -139,8 +139,6 @@ local function get_timestamp_str()
     -- end
     return timestamp_str
 end
-
--- insert timestamp
 local function insert_timestamp()
     local timestamp_str = get_timestamp_str()
     local line = vim.api.nvim_get_current_line()
