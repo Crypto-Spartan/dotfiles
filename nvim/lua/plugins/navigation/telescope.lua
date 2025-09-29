@@ -460,7 +460,8 @@ return {
                             map({'i','n'}, '<CR>', ts_actions().select_tab)
                             return true
                         end,
-                        prompt_title = 'Grep in Help Docs'
+                        prompt_title = 'Grep in Help Docs',
+                        vimgrep_arguments = vim.o.grepprg
                     })
                 end,
                 desc = 'Help Docs (Grep)'
