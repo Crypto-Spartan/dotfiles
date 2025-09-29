@@ -8,7 +8,7 @@ local config = wezterm.config_builder()
 -- example:
 -- config.color_scheme = 'AdventureTime'
 
--- fix: 'The OpenGL implementation is too old to work with glium'
+-- fix 'The OpenGL implementation is too old to work with glium'
 -- config.prefer_egl = true
 
 config.default_prog = { 'powershell.exe' }
@@ -19,7 +19,7 @@ config.font = wezterm.font_with_fallback({
     'JetBrains Mono NL',
     'Cascadia Mono',
     'DejaVu Sans Mono for Powerline',
-    
+
     -- <built-in>, BuiltIn
     -- Assumed to have Emoji Presentation
     'Noto Color Emoji',
