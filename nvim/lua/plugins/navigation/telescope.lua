@@ -116,7 +116,7 @@ return {
             end
 
             local conf = require('telescope.config').values
-            local vimgrep_arguments = vim.o.grepprg or conf.vimgrep_arguments
+            local vimgrep_arguments = opts.vimgrep_arguments or conf.vimgrep_arguments
             if not has_rg_program('live_grep', vimgrep_arguments[1]) then
                 return
             end
@@ -471,7 +471,7 @@ return {
                     local path = nvim_config_dir
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep in ' .. path,
+                        prompt_title = 'Grep (nvim config) in ' .. path,
                         vimgrep_arguments = vim.o.grepprg
                     })
                 end,
@@ -577,7 +577,7 @@ return {
                     enable_preview = true,
                 },
             },
-            extensions = { 'fzf', 'luasnip' },
+            extensions = { 'fzf', 'luasnip' }
         })
 
         telescope.load_extension('fzf')
