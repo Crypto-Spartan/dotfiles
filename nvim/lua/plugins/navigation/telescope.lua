@@ -371,7 +371,7 @@ return {
                     local path = nvim_config_dir
                     ts_builtin().find_files({
                         cwd = path,
-                        prompt_title = 'Find Files in ' .. path,
+                        prompt_title = 'Find Files (nvim config) in ' .. path,
                         hidden = true  -- show hidden files
                     })
                 end,
