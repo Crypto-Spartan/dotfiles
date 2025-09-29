@@ -61,7 +61,7 @@ return {
             desc = 'Quickfix List (Trouble)',
         },
     },
-    opts = {},
+    opts = {}
     -- opts = {
     --     icons = trouble_icons()
     -- },
