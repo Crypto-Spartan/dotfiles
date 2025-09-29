@@ -121,6 +121,8 @@ return {
                 end
                 -- vim.print = _G.dbg -- Override print to use snacks for `:=` command
 
+                -- Toggle line numbers
+                Snacks.toggle.line_number():map('<leader>tl')
                 -- toggle the profiler
                 Snacks.toggle.profiler():map('<leader>tpp')
                 -- toggle the profiler highlights
