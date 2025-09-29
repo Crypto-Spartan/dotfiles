@@ -75,10 +75,10 @@ CF.get_dir_info = function(dirpath)
         if entry_name ~= '.' and entry_name ~= '..' then
             local entry_path = vim.fs.joinpath(dirpath, entry_name)
             if entry_type == 'file' then
-                total_bytes = total_bytes + vim.fn.getfsize(entry_path)
                 total_filecount = total_filecount + 1
+                total_bytes = total_bytes + vim.fn.getfsize(entry_path)
             elseif entry_type == 'directory' then
-                local bytes, filecount, dircount = CF.get_dif_info(entry_path)
+                local bytes, filecount, dircount = CF.get_dir_info(entry_path)
                 total_bytes = total_bytes + bytes
                 total_filecount = total_filecount + filecount
                 total_dircount = total_dircount + dircount + 1
@@ -278,7 +278,7 @@ end
 
 -- Test deferment methods (`{throttle,debounce}_{leading,trailing}()`)
 ---@param bouncer string Bouncer function to test
----@param ms? number Timout in ms, default 2000
+---@param ms? number Timeout in ms, default 2000
 ---@param firstlast? boolean Whether to use the 'other' fn call strategy
 local function test_defer(ms)
     local timeout = ms or 2000
