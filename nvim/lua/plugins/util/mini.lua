@@ -2,8 +2,8 @@ local _full_filesize_str = ''
 -- local _completed_get_filesize = false
 local filesize_cache = {}
 
-local function choose_filsesize_truncated(trunc_width, full_str, filesize_str)
-    local truncated = MiniStatusLine.is_truncated(trunc_width)
+local function choose_filesize_truncated(trunc_width, full_str, filesize_str)
+    local truncated = MiniStatusline.is_truncated(trunc_width)
     if truncated then
         return filesize_str
     else
@@ -39,7 +39,7 @@ local function get_filesize_coop(filepath)
         return stat_res.size
     end
 end
-local function get_filesize_str_coop()
+local function get_filesize_str_coop(filepath)
     return vim.custom_fn.format_bytes(get_filesize_coop(filepath))
 end
 local function get_dir_info(dirpath)
@@ -50,9 +50,9 @@ local function get_dir_info(dirpath)
     -- assert(not scandir_err, scandir_err)
     -- local dir_handle = uv.fs_scandir(dirpath)
     if scandir_err or not dir_handle then
-        -- vim.print('dir_handle: '..vim.inspect(dir_handle))
+        -- vim.print('dir_handle: ' .. vim.inspect(dir_handle))
         -- vim.notify('no dir_handle', vim.log.levels.ERROR)
-        -- error('Error opening directory: '..dirpath)
+        -- error('Error opening directory: ' .. dirpath)
         -- vim.print(dir_handle)
         return 0, 0, 0
     end
@@ -93,7 +93,7 @@ local function get_dir_info(dirpath)
 end
 -- local filesize_notify_throttle = vim.custom_fn.throttle(5000, function(d)
 --     vim.notify(vim.inspect(d))
--- end
+-- end)
 local function get_filesize_oil(trunc_width, timeout)
     local oil = package.loaded.oil
     local oil_entry = oil.get_cursor_entry()
@@ -117,7 +117,7 @@ local function get_filesize_oil(trunc_width, timeout)
         local coop = package.loaded.coop
 
         local filesize_str, full_str = '', oil_entry.name
-        if oil_entry.type == 'directory' then 
+        if oil_entry.type == 'directory' then
             local bytes, filecount, dircount = coop.spawn(get_dir_info, path):await()
             local non_empty_strs = {}
             if dircount ~= nil and dircount > 0 then
@@ -229,7 +229,7 @@ end
 
 
 return {
-    'echasnovski/mini.nvim',
+    'nvim-mini/mini.nvim',
     version = false,
     event = 'VimEnter',
     config = function()
