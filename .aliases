@@ -80,7 +80,7 @@ alias curl='curl --parallel --parallel-immediate'
 alias sudo='sudo '
 
 # URL-encode strings
-alias urlencode='python -c "import sys, urllib as ul; print(ul.quote_plus(sys.argv[1]));'
+alias urlencode='python -c "import sys, urllib as ul; print(ul.quote_plus(sys.argv[1]));"'
 
 # intuitive map function
 # for example, to list all directories that contain a certain file:
