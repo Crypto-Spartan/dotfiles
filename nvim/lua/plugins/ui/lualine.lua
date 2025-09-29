@@ -166,14 +166,14 @@ local function progress()
     elseif cur == total then
         return 'Bot'
     else
-        return string.format('%2d%%%%', math.floor(cur / total * 100))
+        return ('%2d%%%%'):format(math.floor(cur / total * 100))
     end
 end
 
 local function location()
   local line = vim.fn.line('.')
   local col = vim.fn.charcol('.')
-  return string.format('%3d:%-2d %d %d', line, col, vim.fn.line('$'), vim.fn.charcol('$'))
+  return ('%3d:%-2d %d %d'):format(line, col, vim.fn.line('$'), vim.fn.charcol('$'))
 end
 
 return {
