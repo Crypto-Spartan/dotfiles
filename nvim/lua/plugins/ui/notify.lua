@@ -8,6 +8,7 @@ return {
     config = function(_, opts)
         local notify = require('notify')
         notify.setup(opts)
+        -- vim.notify = vim.schedule_wrap(package.loaded.notify)
         vim.notify = notify
     end
 }
