@@ -7,7 +7,7 @@ return {
         'rafamadriz/friendly-snippets',    -- useful snippets
         'hrsh7th/cmp-nvim-lsp',            -- source for LSP
         'hrsh7th/cmp-buffer',              -- source for text in buffer
-        'hrsh7th/cmp-path',                -- source for file system paths
+        'hrsh7th/cmp-path'                 -- source for file system paths
     },
     config = function()
         local cmp = require('cmp')
@@ -34,7 +34,7 @@ return {
                 ['<C-d>']     = cmp.mapping.scroll_docs(4),
                 ['<C-Space>'] = cmp.mapping.complete(), -- show completion suggestions
                 ['<C-y>']     = cmp.mapping.confirm({ select = true }),
-                ['<CR>']      = cmp.mapping.confirm({ select = false }),
+                ['<CR>']      = cmp.mapping.confirm({ select = false })
             }),
             sources = cmp.config.sources({
                 {
@@ -45,8 +45,8 @@ return {
                 { name = 'nvim_lsp' },
                 { name = 'luasnip' },
                 { name = 'buffer' },
-                { name = 'path' },
+                { name = 'path' }
             })
         })
-    end,
+    end
 }
