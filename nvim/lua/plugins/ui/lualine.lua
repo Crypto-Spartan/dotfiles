@@ -171,9 +171,9 @@ local function progress()
 end
 
 local function location()
-  local line = vim.fn.line('.')
-  local col = vim.fn.charcol('.')
-  return ('%3d:%-2d %d %d'):format(line, col, vim.fn.line('$'), vim.fn.charcol('$'))
+    local line = vim.fn.line('.')
+    local col = vim.fn.charcol('.')
+    return ('%3d:%-2d %d %d'):format(line, col, vim.fn.line('$'), vim.fn.charcol('$'))
 end
 
 return {
