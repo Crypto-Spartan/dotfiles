@@ -257,14 +257,14 @@ return {
             {
                 '<leader>fe',
                 function()
-                    ts_builtin().diagnostics({ bufnr = 0 })
+                    ts_builtin().diagnostics({ bufnr = 0, initial_mode = 'normal' })
                 end,
                 desc = 'Errors (Diagnostics) - Current Buffer'
             },
             {
                 '<leader>fE',
                 function()
-                    ts_builtin().diagnostics()
+                    ts_builtin().diagnostics({ initial_mode = 'normal' })
                 end,
                 desc = 'Errors (Diagnostics) - Workspace'
             },
@@ -422,8 +422,7 @@ return {
                     local path = dotfiles_dir
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep in (dotfiles) ' .. path,
-                        vimgrep_arguments = vim.o.grepprg
+                        prompt_title = 'Grep in (dotfiles) ' .. path
                     })
                 end,
                 desc = 'Dotfiles (Grep)'
@@ -434,8 +433,7 @@ return {
                     local path = vim.custom_fn.get_nvim_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep (nvim root dir) in ' .. path,
-                        vimgrep_arguments = vim.o.grepprg
+                        prompt_title = 'Grep (nvim root dir) in ' .. path
                     })
                 end,
                 desc = 'Grep (nvim root dir)'
@@ -446,8 +444,7 @@ return {
                     local path = vim.custom_fn.get_buf_cwd()
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep (cwd) in ' .. path,
-                        vimgrep_arguments = vim.o.grepprg
+                        prompt_title = 'Grep (cwd) in ' .. path
                     })
                 end,
                 desc = 'Grep (cwd)'
@@ -460,8 +457,7 @@ return {
                             map({'i','n'}, '<CR>', ts_actions().select_tab)
                             return true
                         end,
-                        prompt_title = 'Grep in Help Docs',
-                        vimgrep_arguments = vim.o.grepprg
+                        prompt_title = 'Grep in Help Docs'
                     })
                 end,
                 desc = 'Help Docs (Grep)'
@@ -472,8 +468,7 @@ return {
                     local path = nvim_config_dir
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep (nvim config) in ' .. path,
-                        vimgrep_arguments = vim.o.grepprg
+                        prompt_title = 'Grep (nvim config) in ' .. path
                     })
                 end,
                 desc = 'Neovim Config Files (Grep)'
@@ -483,8 +478,7 @@ return {
                 function()
                     ts_builtin().live_grep({
                         grep_open_files = true,
-                        prompt_title = 'Grep in Open Files',
-                        vimgrep_arguments = vim.o.grepprg
+                        prompt_title = 'Grep in Open Files'
                     })
                 end,
                 desc = 'Open Files (Grep)'
@@ -495,8 +489,7 @@ return {
                     local path = plugins_dir
                     ts_builtin().live_grep({
                         cwd = path,
-                        prompt_title = 'Grep (Plugin Files) in ' .. path,
-                        vimgrep_arguments = vim.o.grepprg
+                        prompt_title = 'Grep (Plugin Files) in ' .. path
                     })
                 end,
                 desc = 'Plugin Files (Grep)'
@@ -514,8 +507,7 @@ return {
                         cwd = path,
                         prompt_title = 'Grep (current word; cwd) in ' .. path,
                         word_match = '-w',
-                        initial_mode = 'normal',
-                        vimgrep_arguments = vim.o.grepprg
+                        initial_mode = 'normal'
                     })
                 end,
                 desc = 'Grep current Word (cwd)',
@@ -529,8 +521,7 @@ return {
                         cwd = path,
                         prompt_title = 'Grep (current word; nvim root dir) in ' .. path,
                         word_match = '-w',
-                        initial_mode = 'normal',
-                        vimgrep_arguments = vim.o.grepprg
+                        initial_mode = 'normal'
                     })
                 end,
                 desc = 'Grep current Word (nvim root dir)',
@@ -571,7 +562,8 @@ return {
                     cursor = { width = 0.9 },
                     horizontal = { width = 0.9 },
                     vertical = { width = 0.9 },
-                }
+                },
+                vimgrep_arguments = vim.custom_fn.string_split(vim.o.grepprg)
             },
             pickers = {
                 colorscheme = {
