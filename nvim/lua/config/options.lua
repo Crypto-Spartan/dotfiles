@@ -47,13 +47,13 @@ opt.jumpoptions = 'stack,view'
 opt.updatetime = 1000  -- decrease update time
 opt.cursorline = true  -- show which line cursor is on
 opt.scrolloff  = 10    -- minimum num of screen lines to keep above & below cursor
-opt.confirm    = true  -- ask to save files if taking an operation that would fail due to unsaved changes in the buffer
+opt.confirm    = true  -- prompted to save/cancel if you quit without saving
 
 -- vim.g.have_nerd_font = string.find(vim.v.servername, 'localhost:') ~= nil
 vim.g.have_nerd_font = true
 
 if vim.fn.executable('rg') == 1 then
-    opt.grepprg = 'rg --no-ignore --hidden --glob "!.git" --vimgrep --no-heading --smart-case'
+    opt.grepprg = 'rg --color=never --no-ignore --hidden --vimgrep --no-heading --smart-case --glob=!.git/ --glob=!.venv/ --glob=!node_modules'
     opt.grepformat = '%f:%l:%c:%m'
 end
 
