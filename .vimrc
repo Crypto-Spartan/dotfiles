@@ -33,7 +33,7 @@ set expandtab
 " prompted to save/cancel if you quit without saving
 set confirm
 
-" Do not save backup files.
+" Do not save backup files
 set nobackup
 
 " Do not let cursor scroll below or above N number of lines when scrolling
