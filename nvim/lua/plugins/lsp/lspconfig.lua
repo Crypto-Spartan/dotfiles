@@ -147,6 +147,7 @@ return {
     config = function()
         local capabilities = vim.lsp.protocol.make_client_capabilities()
         capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
+        local lspconfig = require('lspconfig')
 
         local servers = {
             lua_ls = {
@@ -156,18 +157,18 @@ return {
                         completion = { callSnippet = 'Replace' },
                         diagnostics = {
                             disable = { 'missing-fields' }, -- ignore Lua_LS's noisy `missing-fields` warnings
-                            globals = { 'vim' }, -- make the LSP recognize 'vim' global
+                            globals = { 'vim' } -- make the LSP recognize 'vim' global
                         },
                         workspace = {
                             -- make LSP aware of runtime files
                             library = {
                                 vim.fn.expand('$VIMRUNTIME/lua'),
                                 vim.fn.stdpath('config') .. '/lua',
-                                '${3rd}/luv/library',
-                            },
-                        },
-                    },
-                },
+                                '${3rd}/luv/library'
+                            }
+                        }
+                    }
+                }
             },
             -- gopls = {
             --     settings = {
@@ -178,10 +179,47 @@ return {
             --             constantValues = true,
             --             functionTypeParameters = true,
             --             parameterNames = true,
-            --             rangeVariableTypes = true,
-            --         },
-            --     },
+            --             rangeVariableTypes = true
+            --         }
+            --     }
             -- },
+            pylsp = {
+                cmd = { 'pylsp' },
+                filetypes = { 'python' },
+                root_dir = function(fname)
+                    local root_files = {
+                        'pyproject.toml',
+                        'setup.py',
+                        'setup.cfg',
+                        'requirements.txt',
+                        'Pipfile'
+                    }
+                    local util = lspconfig.util
+                    local primary = util.root_pattern(unpack(root_files))(fname)
+                    local fallback = vim.fs.root(fname, '.git')
+                    return primary or fallback
+                end,
+                single_file_support = true,
+                plugins = {
+                    jedi_completion = {
+                        enabled = true,
+                        eager = true,
+                        include_params = true
+                    },
+                    jedi_definition = { enabled = true },
+                    jedi_hover = { enabled = true },
+                    jedi_references = { enabled = true },
+                    jedi_singature_help = { enabled = true },
+                    jedi_symbols = {
+                        enabled = true,
+                        all_scopes = true
+                    },
+                    mccabe = { enabled = true },
+                    rope_rename = { enabled = true },
+                    pylsp_rope = { rename = true },
+                    ruff = { enabled = true }
+                }
+            }
         }
 
         vim.keymap.set('n', '<leader>ld', vim.diagnostic.open_float, { desc = 'LSP: Diagnostic Float'})
@@ -252,7 +290,7 @@ return {
                     -- by the server configuration above. Useful when disabling
                     -- certain features of an LSP (for example, turning off formatting for ts_ls)
                     server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
-                    require('lspconfig')[server_name].setup(server)
+                    lspconfig[server_name].setup(server)
                 end,
             },
         })
