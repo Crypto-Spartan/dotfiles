@@ -24,11 +24,18 @@ return {
                     mode = mode or 'n'
                     vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = 'LSP: ' .. desc })
                 end
+                local ts_builtin = require('telescope.builtin')
 
                 -- Jump to the definition of the word under your cursor
                 --  This is where a variable was first declared, or where a function is defined, etc.
                 --  To jump back, press <C-t>.
-                map('gd', require('telescope.builtin').lsp_definitions, 'Goto Definition')
+                map(
+                    'gd',
+                    function()
+                        ts_builtin.lsp_definitions({ initial_mode = 'normal' })
+                    end,
+                    'Goto Definition'
+                )
 
                 -- WARN: This is not Goto Definition, this is Goto Declaration
                 --  For example, in C this would take you to the header
@@ -38,7 +45,7 @@ return {
                 map(
                     'gr',
                     function()
-                        require('telescope.builtin').lsp_references({ initial_mode = 'normal' })
+                        ts_builtin.lsp_references({ initial_mode = 'normal' })
                     end,
                     'Goto References'
                 )
@@ -48,7 +55,7 @@ return {
                 map(
                     'gi',
                     function()
-                        require('telescope.builtin').lsp_implementations({ initial_mode = 'normal' })
+                        ts_builtin.lsp_implementations({ initial_mode = 'normal' })
                     end,
                     'Goto Implementation'
                 )
@@ -59,7 +66,7 @@ return {
                 map(
                     '<leader>gt',
                     function()
-                        require('telescope.builtin').lsp_type_definitions({ initial_mode = 'normal' })
+                        ts_builtin.lsp_type_definitions({ initial_mode = 'normal' })
                     end,
                     'Type Definition'
                 )
@@ -69,7 +76,7 @@ return {
                 map(
                     '<leader>fs',
                     function()
-                        require('telescope.builtin').lsp_document_symbols({ initial_mode = 'normal' })
+                        ts_builtin.lsp_document_symbols({ initial_mode = 'normal' })
                     end,
                     'Find Symbols (Document)'
                 )
@@ -79,7 +86,7 @@ return {
                 map(
                     '<leader>fS',
                     function()
-                        require('telescope.builtin').lsp_document_symbols({ initial_mode = 'normal' })
+                        ts_builtin.lsp_document_symbols({ initial_mode = 'normal' })
                     end,
                     'Find Symbols (Workspace)'
                 )
@@ -91,8 +98,6 @@ return {
                 -- The following two autocommands are used to highlight references of the
                 -- word under your cursor when your cursor rests there for a little while
                 --    See `:help CursorHold` for information about when this is executed
-
-                -- When you move your cursor, the highlights will be cleared (the second autocommand)
                 local client = vim.lsp.get_client_by_id(event.data.client_id)
                 -- if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
                 --     local highlight_augroup = vim.api.nvim_create_augroup('lspconfig-lsp-highlight', { clear = false })
@@ -102,6 +107,7 @@ return {
                 --         callback = vim.lsp.buf.document_highlight,
                 --     })
                 --
+                --     -- When you move your cursor, the highlights will be cleared
                 --     vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
                 --         buffer = event.buf,
                 --         group = highlight_augroup,
@@ -131,7 +137,7 @@ return {
                             else
                                 vim.lsp.inlay_hint.enable(false)
                             end
-                        end,
+                        end
                     }
                     package.loaded.snacks.toggle.new(toggle_opts):map('<leader>th')
                 end
