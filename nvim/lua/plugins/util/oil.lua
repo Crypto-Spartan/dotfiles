@@ -26,7 +26,9 @@ return {
             ['<bs>'] = 'actions.parent',
             ['<C-c>'] = { '<nop>', desc = 'Same as <esc>' },
             ['<C-s>'] = { vim.cmd.write, desc = 'Save the buffer' },
+            ['<C-h>'] = { '<C-w><C-h>', desc = 'Move focus to the left window' },
             ['<C-v>'] = { 'actions.select', opts = { vertical = true } },
+            ['<C-w>'] = { 'actions.select', opts = { horizontal = true } },
             ['<C-p>'] = {
                 callback = function()
                     local oil = package.loaded.oil
