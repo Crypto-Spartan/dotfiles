@@ -161,9 +161,31 @@ CF.string_insert = function(str, pos, text)
     return str:sub(1, pos - 1) .. text .. str:sub(pos)
 end
 
+-- sep is optional, will split on whitespace by default
+CF.string_split = function(input_str, sep)
+    vim.validate('input_str', input_str, 'string')
+    if sep == nil then
+        sep = '%s'
+    else
+        vim.validate('sep', sep, 'string')
+    end
+
+    local return_table = {}
+    for s in string.gmatch(input_str, '([^' .. sep .. ']+)') do
+        table.insert(return_table, s)
+    end
+
+    return return_table
+end
+
+-- sep is optional
 CF.string_join = function(str_list, sep)
     vim.validate('str_list', str_list, 'table')
-    vim.validate('sep', sep, 'string')
+    if sep == nil then
+        sep = ''
+    else
+        vim.validate('sep', sep, 'string')
+    end
 
     local str = ''
     if #str_list > 0 then
