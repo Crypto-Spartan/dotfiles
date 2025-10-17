@@ -141,7 +141,7 @@ return {
                     }
                     package.loaded.snacks.toggle.new(toggle_opts):map('<leader>th')
                 end
-            end,
+            end
         })
     end,
     config = function()
@@ -209,13 +209,13 @@ return {
                     jedi_definition = { enabled = true },
                     jedi_hover = { enabled = true },
                     jedi_references = { enabled = true },
-                    jedi_singature_help = { enabled = true },
+                    jedi_signature_help = { enabled = true },
                     jedi_symbols = {
                         enabled = true,
                         all_scopes = true
                     },
                     mccabe = { enabled = true },
-                    rope_rename = { enabled = true },
+                    rope_rename = { enabled = false },
                     pylsp_rope = { rename = true },
                     ruff = { enabled = true }
                 }
