@@ -32,5 +32,5 @@ return {
     opts = {
         startVisible = false,
         showBlankVirtLine = false,
-    },
+    }
 }
