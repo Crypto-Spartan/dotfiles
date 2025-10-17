@@ -15,7 +15,7 @@ local function get_buf_count()
 
         -- if (buf_name == nil or #buf_name == 0) then
         --     if vim.api.nvim_buf_is_loaded(buf) then
-        --         vim.cmd('bd ' .. buf)  -- buffer delete? need to check this
+        --         vim.cmd('bd ' .. buf) -- buffer delete? need to check this
         --     end
         -- elseif string.sub(buf_name, 1, 4) == 'oil:' then
         --     -- print(buf_name)
@@ -131,18 +131,17 @@ local function cursor_line()
         return ''
     end
 
-    local line_str = 'Line: %s (%d%%%%)'
     local line_num = vim.fn.line('.')
-    if total_lines == 1 then
-        return line_str:format('Top', 0)
-    elseif total_lines == line_num then
-        return line_str:format('Bot', 100)
+    local line_pct
+    if line_num == 1 or total_lines == 1 then
+        line_pct = 0
+    elseif line_num == total_lines then
+        line_pct = 100
     else
-        return line_str:format(
-            ('%d/%d'):format(line_num, total_lines),
-            math.floor(line_num / total_lines * 100)
-        )
+        line_pct = math.floor(line_num / total_lines * 100)
     end
+
+    return ('%d/%d (%d%%%%)'):format(line_num, total_lines, line_pct)
 end
 
 local function cursor_col()
@@ -153,18 +152,17 @@ local function cursor_col()
 
     local col_num = vim.fn.charcol('.')
     local col_pct = math.floor(col_num / line_len * 100)
-    return ('Col: %d/%d (%d%%%%)'):format(col_num, line_len, col_pct)
+    return ('%d/%d (%d%%%%)'):format(col_num, line_len, col_pct)
 end
 
 local function progress()
     local cur = vim.fn.line('.')
-    -- print('cur: '..vim.inspect(cur))
     local total = vim.fn.line('$')
-    -- print('total: '..vim.inspect(total))
+
     if cur == 1 then
-        return 'Top'
+        return '0%%'
     elseif cur == total then
-        return 'Bot'
+        return '100%%'
     else
         return ('%2d%%%%'):format(math.floor(cur / total * 100))
     end
