@@ -21,16 +21,16 @@ return {
                         else
                             p_pkg.hide()
                         end
-                    end,
+                    end
                 }
                 package.loaded.snacks.toggle.new(toggle_opts):map(precognition_keymap)
                 package.loaded.snacks.toggle.toggles.precognition_motions:toggle()
             end,
             desc = 'Enable Precognition (Motions)'
-        },
+        }
     },
     opts = {
         startVisible = false,
-        showBlankVirtLine = false,
+        showBlankVirtLine = false
     }
 }
