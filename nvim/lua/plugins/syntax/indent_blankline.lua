@@ -52,7 +52,7 @@ return {
                         ibl_snacks_enabled = false
                         ibl_pkg.update({ enabled = false })
                     end
-                end,
+                end
             }
             package.loaded.snacks.toggle.new(toggle_opts):map('<leader>ti')
         end)
