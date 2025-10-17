@@ -8,6 +8,7 @@ opt.smartindent   = true  -- smart autoindenting when starting a new line
 opt.breakindent   = true  -- every wrapped line will continue visually indented
 opt.expandtab     = true  -- use spaces instead of tabs
 opt.termguicolors = true  -- enable 24-bit color
+opt.showtabline   = 2     -- show tabline always
 
 -- linenumbers
 opt.number = true
