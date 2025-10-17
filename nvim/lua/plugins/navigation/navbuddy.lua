@@ -17,5 +17,5 @@ return {
     opts = {
         lsp = { auto_attach = true },
         window = { size = '70%' },
-    },
+    }
 }
