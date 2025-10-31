@@ -49,8 +49,9 @@ alias gd='git diff'
 alias ga='git add'
 alias gc='git commit -m'
 alias gl="git log --graph --relative-date --pretty='%C(auto,yellow)%h%C(auto,magenta)% G? %C(auto,cyan)%>(12,trunc)%ad %C(auto,green)%<(15,trunc)%aN %C(auto,reset)%s%C(auto,red)% gD% D' --color=always"
-alias gpsh='git push'
-alias gu='git reset HEAD~'  # "git undo"
+alias gpull='git pull'
+alias gpush='git push'
+alias gundo='git reset HEAD~'  # "git undo"
 alias lg='lazygit'
 
 alias cd='z'
