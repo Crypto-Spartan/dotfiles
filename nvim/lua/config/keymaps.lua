@@ -115,6 +115,12 @@ end
 nnoremap('<leader>z', change_nvim_dir_to_current_file, { desc = 'Change nvim cwd to current buffer directory' })
 
 
+--[[ *ALT KEYMAPS* ]]--
+
+inoremap('<M-o>', '<esc>o<esc>a', { desc = 'Add line below, return to insert mode' })
+inoremap('<M-O>', '<esc>O<esc>a', { desc = 'Add line above, return to insert mode' })
+
+
 --[[ *MISC KEYMAPS* ]]--
 
 nnoremap('<bs>', '<C-^>', { desc = 'Switch to last buffer' })
@@ -130,22 +136,9 @@ vim.keymap.set('n', 'yc', 'yygccp', { desc = 'duplicate line & comment out first
 -- select recently pasted, yanked, or changed text
 nnoremap('gy', "`[v`]", { desc = 'Select recently pasted, yanked, or changed text' })
 
-local function get_timestamp_str()
-    local timestamp_str = ('%s UTC -- '):format(os.date('!%Y-%m-%d %H:%M:%S'))
-    -- local filepath = vim.fn.expand('%:p')
-    -- -- make timestamp a markdown bullet if in <dir> and file ends in `.md`
-    -- if filepath:find('<dir>', 1, true) ~= nil and filepath:sub(-3) == '.md' then
-    --     timestamp_str = '- '..timestamp_str
-    -- end
-    return timestamp_str
-end
 local function insert_timestamp()
-    local timestamp_str = get_timestamp_str()
-    local line = vim.api.nvim_get_current_line()
-    local cursor_pos = vim.api.nvim_win_get_cursor(0)
-    cursor_pos[2] = cursor_pos[2] + #timestamp_str
-    vim.api.nvim_set_current_line(timestamp_str..line)
-    vim.api.nvim_win_set_cursor(0, cursor_pos)
+    local timestamp_str = ('%s UTC -- '):format(os.date('!%Y-%m-%d %H:%M:%S'))
+    vim.api.nvim_put({timestamp_str}, 'c', true, true)
 end
 vim.keymap.set({'n','i','v','x'}, '<F5>', insert_timestamp, { desc = 'Insert Timestamp', nowait = true })
 
@@ -153,13 +146,20 @@ vim.keymap.set({'n','i','v','x'}, '<F5>', insert_timestamp, { desc = 'Insert Tim
 -- these allow `j` & `k` to work with wordwrapped lines while not messing up motions
 local function make_jk_map_func(key)
     vim.validate('key', key, 'string')
-    local g_key = vim.api.nvim_replace_termcodes('g'..key, true, false, true)
+    local g_key = 'g'..key
+    local g_key_cmd_single = vim.api.nvim_parse_cmd('normal! '..g_key, {})
+    g_key_cmd_single.addr    = nil
+    g_key_cmd_single.nargs   = nil
+    g_key_cmd_single.nextcmd = nil
+    local key_cmd_multiple = vim.deepcopy(g_key_cmd_single)
+    
     local map_jk = function()
         local count = vim.v.count
         if count == 0 then
-            vim.api.nvim_feedkeys(g_key, 'n', false)
+            vim.api.nvim_cmd(g_key_cmd_single --[[@as vim.api.keyset.cmd]], { output = false })
         else
-            vim.api.nvim_feedkeys(tostring(count)..key, 'n', false)
+            key_cmd_multiple.args[1] = tostring(count)..key
+            vim.api.nvim_cmd(key_cmd_multiple --[[@as vim.api.keyset.cmd]], { output = false })
         end
     end
     return map_jk
@@ -175,10 +175,10 @@ nnoremap('L', 'g$', { nowait = true })
 nnoremap('x', [["_x]], { nowait = true })
 nnoremap('X', [["_X]], { nowait = true })
 
-local function make_change_blankline_key_func(no_blackhole_key, key)
+local function make_change_blankline_key_func(blackhole_key, key)
     local map_key = function()
         if custom_fn.current_line_empty() then
-            vim.api.nvim_feedkeys(no_blackhole_key, 'n', false)
+            vim.api.nvim_feedkeys(blackhole_key, 'n', false)
         else
             vim.api.nvim_feedkeys(key, 'n', false)
         end
@@ -186,13 +186,13 @@ local function make_change_blankline_key_func(no_blackhole_key, key)
     return map_key
 end
 
-local cc_no_blackhole_key = vim.api.nvim_replace_termcodes([["_cc]], true, false, true)
-local dd_no_blackhole_key = vim.api.nvim_replace_termcodes([["_dd]], true, false, true)
+local cc_blackhole_key = vim.api.nvim_replace_termcodes([["_cc]], true, false, true)
+local dd_blackhole_key = vim.api.nvim_replace_termcodes([["_dd]], true, false, true)
 -- auto indent on empty line with `a` or `A`
-nnoremap('a',  make_change_blankline_key_func(cc_no_blackhole_key, 'a'),  { nowait = true })
-nnoremap('A',  make_change_blankline_key_func(cc_no_blackhole_key, 'A'),  { nowait = true })
+nnoremap('a',  make_change_blankline_key_func(cc_blackhole_key, 'a'),  { nowait = true })
+nnoremap('A',  make_change_blankline_key_func(cc_blackhole_key, 'A'),  { nowait = true })
 -- delete line to black hole register if it's blank
-nnoremap('dd', make_change_blankline_key_func(dd_no_blackhole_key, 'dd'), { nowait = true })
+nnoremap('dd', make_change_blankline_key_func(dd_blackhole_key, 'dd'), { nowait = true })
 
 -- automatically add semicolon or comma at the end of the line in insert mode
 inoremap(';;', '<esc>A;')
