@@ -19,42 +19,42 @@ return {
     cmd = 'Trouble',
     keys = {
         {
-            '<leader>xx',
+            '<leader>qd',
             function()
                 vim.cmd('Trouble diagnostics toggle')
             end,
             desc = 'Diagnostics (Trouble)',
         },
         {
-            '<leader>xX',
+            '<leader>qD',
             function()
                 vim.cmd('Trouble diagnostics toggle filter.buf=0')
             end,
             desc = 'Buffer Diagnostics (Trouble)',
         },
         {
-            '<leader>xs',
+            '<leader>qs',
             function()
                 vim.cmd('Trouble symbols toggle focus=false')
             end,
             desc = 'Symbols (Trouble)',
         },
         {
-            '<leader>xl',
+            '<leader>ql',
             function()
                 vim.cmd('Trouble lsp toggle focus=false win.position=right')
             end,
             desc = 'LSP Definitions / references / ... (Trouble)',
         },
         {
-            '<leader>xL',
+            '<leader>qL',
             function()
                 vim.cmd('Trouble loclist toggle')
             end,
             desc = 'Location List (Trouble)',
         },
         {
-            '<leader>xq',
+            '<leader>qq',
             function()
                 vim.cmd('Trouble qflist toggle')
             end,
