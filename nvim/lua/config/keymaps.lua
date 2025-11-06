@@ -64,6 +64,7 @@ local function get_paste_str(cword)
     local filetype = vim.bo.filetype
     local paste_str
     if filetype == 'lua' then
+        cword = custom_fn.string_replace(cword, [[']], [["]])
         paste_str = "print('"..cword..": '..vim.inspect("..cword.."))"
     elseif filetype == 'python' then
         cword = custom_fn.string_replace(cword, [[']], [["]])
@@ -80,7 +81,7 @@ local function paste_print_debug_normal()
     if paste_str == nil then
         return
     end
-    vim.api.nvim_feedkeys('o'..paste_str..esc_key, 'n', false)
+    vim.api.nvim_feedkeys('o'..paste_str..esc_key, 'ntx', false)
 end
 nnoremap('<leader>pd', paste_print_debug_normal, { desc = 'Paste Print Debug of word under cursor' })
 
@@ -90,7 +91,7 @@ local function paste_print_debug_visual()
     if paste_str == nil then
         return
     end
-    vim.api.nvim_feedkeys(esc_key..'o'..paste_str..esc_key, 'n', false)
+    vim.api.nvim_feedkeys(esc_key..'o'..paste_str..esc_key, 'ntx', false)
 end
 vnoremap('<leader>pd', paste_print_debug_visual, { desc = 'Paste Print Debug of visual selection' })
 
@@ -146,11 +147,8 @@ vim.keymap.set({'n','i','v','x'}, '<F5>', insert_timestamp, { desc = 'Insert Tim
 -- these allow `j` & `k` to work with wordwrapped lines while not messing up motions
 local function make_jk_map_func(key)
     vim.validate('key', key, 'string')
-    local g_key = 'g'..key
-    local g_key_cmd_single = vim.api.nvim_parse_cmd('normal! '..g_key, {})
-    g_key_cmd_single.addr    = nil
-    g_key_cmd_single.nargs   = nil
-    g_key_cmd_single.nextcmd = nil
+    local g_key_cmd_single = vim.api.nvim_parse_cmd('normal! g'..key, {})
+    g_key_cmd_single.addr, g_key_cmd_single.nargs, g_key_cmd_single.nextcmd = nil, nil, nil
     local key_cmd_multiple = vim.deepcopy(g_key_cmd_single)
     
     local map_jk = function()
@@ -175,12 +173,12 @@ nnoremap('L', 'g$', { nowait = true })
 nnoremap('x', [["_x]], { nowait = true })
 nnoremap('X', [["_X]], { nowait = true })
 
-local function make_change_blankline_key_func(blackhole_key, key)
+local function make_change_blankline_key_func(line_empty_key, key)
     local map_key = function()
         if custom_fn.current_line_empty() then
-            vim.api.nvim_feedkeys(blackhole_key, 'n', false)
+            vim.api.nvim_feedkeys(line_empty_key, 'nx!', false)
         else
-            vim.api.nvim_feedkeys(key, 'n', false)
+            vim.api.nvim_feedkeys(key, 'nx!', false)
         end
     end
     return map_key
@@ -193,17 +191,22 @@ nnoremap('a',  make_change_blankline_key_func(cc_blackhole_key, 'a'),  { nowait 
 nnoremap('A',  make_change_blankline_key_func(cc_blackhole_key, 'A'),  { nowait = true })
 -- delete line to black hole register if it's blank
 nnoremap('dd', make_change_blankline_key_func(dd_blackhole_key, 'dd'), { nowait = true })
+-- paste with auto-indent if line is blank
+nnoremap('dd', make_change_blankline_key_func('p`[v`]=', 'dd'),        { nowait = true })
 
+-- automatically add semicolon or comma at the end of the line in normal mode
+nnoremap('<leader>;', 'A;<esc>', { desc = 'add semicolon at end of line', nowait = true })
+nnoremap('<leader>,', 'A,<esc>', { desc = 'add comma at end of line',     nowait = true })
 -- automatically add semicolon or comma at the end of the line in insert mode
 inoremap(';;', '<esc>A;')
 inoremap(',,', '<esc>A,')
 
 -- block insert in visual line mode
-local caret_ctrl_v_key = vim.api.nvim_replace_termcodes('^<c-v>', true, false, true)
+local caret_ctrl_v_key = vim.api.nvim_replace_termcodes('^<C-v>', true, false, true)
 local function visual_line_mode_block_insert()
     if vim.fn.mode() == 'V' then
         vim.api.nvim_feedkeys(caret_ctrl_v_key, 'n', false)
     end
-    vim.api.nvim_feedkeys('I', 'n', false)
+    vim.api.nvim_feedkeys('I', 'nx!', false)
 end
-vnoremap('I', visual_line_mode_block_insert, { desc = 'Block Insert (from Visual Line Mode)' })
+vnoremap('I', visual_line_mode_block_insert, { desc = 'Block Insert (from Visual Line Mode)', nowait = true })
