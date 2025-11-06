@@ -141,7 +141,7 @@ return {
             pattern = 'LazyFileOpen',
             once = true,
             callback = function()
-                Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>tw')
+                Snacks.toggle.option('wrap', { name = 'Line Wrap' }):map('<leader>tw')
                 Snacks.toggle.diagnostics():map('<leader>td')
                 Snacks.toggle.treesitter():map('<leader>tt')
             end,
