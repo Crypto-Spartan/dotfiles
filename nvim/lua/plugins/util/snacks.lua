@@ -21,21 +21,27 @@ return {
         dashboard = { enabled = false },
         debug     = { enabled = true },
         dim       = { enabled = false },
+        explorer  = { enabled = false },
+        gh        = { enabled = false },
         git       = { enabled = true },
         gitbrowse = { enabled = false },
+        image     = { enabled = false },
         indent    = { enabled = false },
         input     = { enabled = false },
+        keymap    = { enabled = true },
+        layout    = { enabled = false },
         lazygit   = { enabled = false },
         notifier  = {
             enabled = false,
             -- timeout = 3000,
         },
         notify       = { enabled = false },
+        picker       = { enabled = false },
         profiler     = { enabled = true },
         quickfile    = { enabled = false },
         rename       = { enabled = false },
         scope        = { enabled = false },
-        scratch      = { enabled = true },
+        scratch      = { enabled = false },
         scroll       = { enabled = true },
         statuscolumn = { enabled = true },
         terminal     = { enabled = true },
@@ -101,10 +107,10 @@ return {
                         signcolumn = 'yes',
                         statuscolumn = ' ',
                         conceallevel = 3,
-                    },
+                    }
                 })
-            end,
-        },
+            end
+        }
     },
     init = function()
         -- snacks config on VeryLazy
@@ -133,7 +139,7 @@ return {
                 -- Snacks.toggle.option('conceallevel', { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }):map('<leader>uc')
                 -- Snacks.toggle.option('background', { off = 'light', on = 'dark', name = 'Dark Background' }):map('<leader>ub')
                 -- Snacks.toggle.inlay_hints():map('<leader>uh')
-            end,
+            end
         })
 
         -- snacks config on file open
@@ -144,7 +150,7 @@ return {
                 Snacks.toggle.option('wrap', { name = 'Line Wrap' }):map('<leader>tw')
                 Snacks.toggle.diagnostics():map('<leader>td')
                 Snacks.toggle.treesitter():map('<leader>tt')
-            end,
+            end
         })
-    end,
+    end
 }
