@@ -192,7 +192,7 @@ nnoremap('A',  make_change_blankline_key_func(cc_blackhole_key, 'A'),  { nowait 
 -- delete line to black hole register if it's blank
 nnoremap('dd', make_change_blankline_key_func(dd_blackhole_key, 'dd'), { nowait = true })
 -- paste with auto-indent if line is blank
-nnoremap('dd', make_change_blankline_key_func('p`[v`]=', 'dd'),        { nowait = true })
+nnoremap('p', make_change_blankline_key_func('p`[v`]=', 'p'),          { nowait = true })
 
 -- automatically add semicolon or comma at the end of the line in normal mode
 nnoremap('<leader>;', 'A;<esc>', { desc = 'add semicolon at end of line', nowait = true })
