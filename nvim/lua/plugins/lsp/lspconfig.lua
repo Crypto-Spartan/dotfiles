@@ -218,7 +218,8 @@ return {
                     rope_rename = { enabled = false },
                     pylsp_rope = { rename = true },
                     ruff = { enabled = true }
-                }
+                },
+                zls = {}
             }
         }
 
