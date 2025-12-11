@@ -58,6 +58,8 @@ if vim.fn.executable('rg') == 1 then
     opt.grepformat = '%f:%l:%c:%m'
 end
 
+vim.g.go_recommended_style = false
+
 vim.filetype.add({
     filename = {
         ['.aliases']              = 'sh',
