@@ -86,7 +86,7 @@ return {
                 map(
                     '<leader>fS',
                     function()
-                        ts_builtin.lsp_document_symbols({ initial_mode = 'normal' })
+                        ts_builtin.lsp_dynamic_workspace_symbols({ initial_mode = 'normal' })
                     end,
                     'Find Symbols (Workspace)'
                 )
@@ -98,7 +98,7 @@ return {
                 -- The following two autocommands are used to highlight references of the
                 -- word under your cursor when your cursor rests there for a little while
                 --    See `:help CursorHold` for information about when this is executed
-                local client = vim.lsp.get_client_by_id(event.data.client_id)
+                local client = assert(vim.lsp.get_client_by_id(event.data.client_id))
                 -- if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
                 --     local highlight_augroup = vim.api.nvim_create_augroup('lspconfig-lsp-highlight', { clear = false })
                 --     vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
@@ -123,7 +123,7 @@ return {
                 --     })
                 -- end
 
-                if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+                if client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
                     vim.lsp.inlay_hint.enable(true)
                     -- snacks.toggle setup
                     local toggle_opts = {
