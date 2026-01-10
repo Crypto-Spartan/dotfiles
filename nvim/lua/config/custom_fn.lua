@@ -282,7 +282,7 @@ CF.choose_from_func = function(func, val_if_true, val_if_false)
 end
 
 CF.throttle = function(fn, ms)
-    local timer = uv.new_timer()
+    local timer = assert(uv.new_timer())
     local running = false
 
     local function wrapped_fn(...)
@@ -299,9 +299,9 @@ CF.throttle = function(fn, ms)
 end
 
 -- Test deferment methods (`{throttle,debounce}_{leading,trailing}()`)
----@param bouncer string Bouncer function to test
+-- -@param bouncer string Bouncer function to test
 ---@param ms? number Timeout in ms, default 2000
----@param firstlast? boolean Whether to use the 'other' fn call strategy
+-- -@param firstlast? boolean Whether to use the 'other' fn call strategy
 local function test_defer(ms)
     local timeout = ms or 2000
 
