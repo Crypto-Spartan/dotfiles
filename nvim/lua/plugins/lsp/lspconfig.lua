@@ -10,12 +10,13 @@ return {
         'hrsh7th/cmp-nvim-lsp',
     },
     init = function()
-        -- delete keymaps that conflict with 'gr'
+        -- delete keymaps that conflict with 'gr*' & 'gO'
         vim.keymap.del({'n','x'}, 'gra')    -- vim.lsp.buf.code_action()
         vim.keymap.del('n', 'gri')          -- vim.lsp.buf.implementation()
         vim.keymap.del('n', 'grn')          -- vim.lsp.buf.rename()
         vim.keymap.del('n', 'grr')          -- vim.lsp.buf.references()
         vim.keymap.del('n', 'grt')          -- vim.lsp.buf.type_definition()
+        vim.keymap.del('n', 'gO')           -- vim.lsp.buf.document_symbol()
 
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lspconfig-lsp-attach', { clear = true }),
