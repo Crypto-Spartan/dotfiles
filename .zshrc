@@ -77,6 +77,10 @@ zstyle :omz:update mode reminder  # just remind me to update when it's time
 # see 'man strftime' for details.
 # HIST_STAMPS="mm/dd/yyyy"
 
+# from https://github.com/TamCore/autoupdate-oh-my-zsh-plugins
+# turn off the "Upgrading custom plugins" message since i'm using using p10k's instant prompt
+# ZSH_CUSTOM_AUTOUPDATE_QUIET=true
+
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
@@ -85,7 +89,7 @@ zstyle :omz:update mode reminder  # just remind me to update when it's time
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(aliases command-not-found copybuffer copyfile copypath encode64 eza genpass git-commit isodate nmap pip procs python rsync rust safe-paste ssh ssh-agent systemd thefuck timer vi-mode virtualenv zellij zoxide)
+plugins=(aliases autoupdate command-not-found copybuffer copyfile copypath encode64 eza fzf-tab genpass git-commit isodate nmap pip procs python rsync rust safe-paste ssh ssh-agent systemd timer vi-mode virtualenv zoxide)
 
 export ZSH_COMPDUMP=$HOME/.cache/oh-my-zsh/.zcompdump-$HOST-$ZSH_VERSION
 
