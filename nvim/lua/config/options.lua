@@ -59,7 +59,6 @@ if vim.fn.executable('rg') == 1 then
 end
 
 vim.g.go_recommended_style = false
-vim.g.yaml_recommended_style = false
 
 vim.filetype.add({
     filename = {
