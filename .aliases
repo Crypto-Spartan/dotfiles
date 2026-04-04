@@ -21,13 +21,13 @@ alias et='eza -hlmT -F -L 2 --color=always'
 alias eta='eza -ahlmT -F -L 2 --color=always --ignore-glob=".git|.memestra"'
 alias eza='eza -m'
 
-alias bathelp='bat --style="numbers,grid" --language=help'
+alias bathelp='bat --plain --language=help'
 # allows `help cp` or `help git commit`
 help() {
     "$@" --help 2>&1 | bathelp
 }
 # adds zsh global alias for `--help`
-if [[ $(ps -p $$ | egrep '\szsh$') != '' ]]; then
+if [[ -n "$(ps -p $$ | grep -E '\szsh$')" ]]; then
     alias -g -- --help='--help 2>&1 | bat --plain --language=help'
 fi
 
@@ -63,8 +63,6 @@ alias -- -='z -'
 # always enable colored `grep` output
 # note: `GREP_OPTIONS="--color=auto"` is deprecated, hence the alias usage
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 
 #alias zam='zellij attach main'
 
