@@ -25,4 +25,4 @@ export HISTSIZE='32768'
 export HISTFILESIZE=$HISTSIZE
 
 # don't clear the screen after quitting a manual page
-export MANPAGER='less -XRFM +Gg'
+export MANPAGER='less -RFM +Gg'
