@@ -70,7 +70,16 @@ local function get_paste_str(cword)
         cword = custom_fn.string_replace(cword, [[']], [["]])
         paste_str = "print(f'{"..cword.." = }')"
     elseif filetype == 'rust' then
-        paste_str = "dbg!(&"..cword..");"
+        paste_str = 'dbg!(&'..cword..');'
+    elseif filetype == 'go' then
+        paste_str = 'fmt.Println("'..cword..':", '..cword..')'
+    elseif filetype == 'sh' then
+        if custom_fn.string_contains(cword, '"') then
+            paste_str = 'echo $('..cword..')'
+        elseif mode == 'n' then
+            paste_str = 'echo "$'..cword..'"'
+        elseif mode == 'v' or mode == 'V' then
+            paste_str = 'echo "$('..cword..')"'
     end
     return paste_str
 end
@@ -83,7 +92,7 @@ local function paste_print_debug_normal()
     end
     vim.api.nvim_feedkeys('o'..paste_str..esc_key, 'ntx', false)
 end
-nnoremap('<leader>pd', paste_print_debug_normal, { desc = 'Paste Print Debug of word under cursor' })
+nnoremap('<leader>pd', paste_print_debug_normal, { desc = 'Paste Print Debug of word under cursor', nowait = true })
 
 local function paste_print_debug_visual()
     local selection = custom_fn.get_visual_selection_text()[1]
