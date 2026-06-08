@@ -74,12 +74,14 @@ local function get_paste_str(cword)
     elseif filetype == 'go' then
         paste_str = 'fmt.Println("'..cword..':", '..cword..')'
     elseif filetype == 'sh' then
+        local mode = vim.fn.mode()
         if custom_fn.string_contains(cword, '"') then
             paste_str = 'echo $('..cword..')'
         elseif mode == 'n' then
             paste_str = 'echo "$'..cword..'"'
         elseif mode == 'v' or mode == 'V' then
             paste_str = 'echo "$('..cword..')"'
+        end
     end
     return paste_str
 end
@@ -159,7 +161,7 @@ local function make_jk_map_func(key)
     local g_key_cmd_single = vim.api.nvim_parse_cmd('normal! g'..key, {})
     g_key_cmd_single.addr, g_key_cmd_single.nargs, g_key_cmd_single.nextcmd = nil, nil, nil
     local key_cmd_multiple = vim.deepcopy(g_key_cmd_single)
-    
+
     local map_jk = function()
         local count = vim.v.count
         if count == 0 then
