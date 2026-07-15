@@ -22,6 +22,12 @@ alias eta='eza -ahlmT -F -L 2 --color=always --ignore-glob=".git|.memestra"'
 alias eza='eza -m'
 
 alias bathelp='bat --plain --language=help'
+
+batman() {
+    man "$@" | bat --plain --language=man
+}
+alias bman='batman'
+
 # allows `help cp` or `help git commit`
 help() {
     "$@" --help 2>&1 | bathelp
