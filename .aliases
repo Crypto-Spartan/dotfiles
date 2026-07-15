@@ -33,7 +33,7 @@ help() {
     "$@" --help 2>&1 | bathelp
 }
 # adds zsh global alias for `--help`
-if [[ -n "$(ps -p $$ | grep -E '\szsh$')" ]]; then
+if [[ -n "$(ps -p $$ | sed -n '/\szsh$/p')" ]]; then
     alias -g -- --help='--help 2>&1 | bat --plain --language=help'
 fi
 
