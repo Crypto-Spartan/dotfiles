@@ -24,9 +24,9 @@ ln -sf ~/.dotfiles/nvim ~/.config/
 ln -sf ~/.dotfiles/.ssh_config ~/.ssh/config
 
 for file in ~/.dotfiles/.{aliases,exports,}; do
-    [ -r $file ] && [ -f $file ] && source $file;
-done;
-unset file;
+    [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file"
+done
+unset file
 
 exit_session() {
     . "$HOME/.bash_logout"
