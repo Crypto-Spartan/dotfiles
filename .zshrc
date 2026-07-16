@@ -161,5 +161,25 @@ trap exit_session EXIT SIGHUP SIGQUIT SIGKILL SIGALRM SIGTERM
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# dedup PATH
+# also put unix paths before windows paths, but keep relative order
+export PATH=$(
+    tr ':' '\n' <<< "$PATH" \
+    | awk '
+        !seen[$0]++ {
+            if (substr($0, 1, 7) != "/mnt/c/") {
+                print $0
+            } else {
+                win_paths[idx++] = $0
+            }
+        }
+        END {
+            for (i = 0; i < idx; i++) {
+                print win_paths[i]
+            }
+        }' \
+    | paste -s -d':'
+)
+
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

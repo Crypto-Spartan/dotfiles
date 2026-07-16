@@ -28,6 +28,26 @@ for file in ~/.dotfiles/.{aliases,exports,}; do
 done
 unset file
 
+# dedup PATH
+# also put unix paths before windows paths, but keep relative order
+export PATH=$(
+    tr ':' '\n' <<< "$PATH" \
+    | awk '
+        !seen[$0]++ {
+            if (substr($0, 1, 7) != "/mnt/c/") {
+                print $0
+            } else {
+                win_paths[idx++] = $0
+            }
+        }
+        END {
+            for (i = 0; i < idx; i++) {
+                print win_paths[i]
+            }
+        }' \
+    | paste -s -d':'
+)
+
 exit_session() {
     . "$HOME/.bash_logout"
 }
