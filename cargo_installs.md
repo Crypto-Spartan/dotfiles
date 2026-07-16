@@ -2,12 +2,12 @@
 
 list cargo installed packages:
 ```bash
-cargo install --list | rg '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' '
+cargo install --list | rg '(?-u)^([a-z0-9_-]+) v[^:[:space:]]+:$' -r '$1'
 ```
 
 update cargo packages automatically:
 ```bash
-cargo install $(cargo install --list | rg '^[a-z0-9_-]+ v[0-9.]+:$' | cut -f1 -d' ')
+cargo install $(cargo install --list | rg '(?-u)^([a-z0-9_-]+) v[^:[:space:]]+:$' -r '$1')
 ```
 
 # Cargo packages (work)
