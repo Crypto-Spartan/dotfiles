@@ -1,5 +1,6 @@
 return {
     'nvim-treesitter/nvim-treesitter-context',
+    enabled = false,
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     event = { 'LazyFileOpen', 'BufNewFile' },
     ft = { 'scm' },

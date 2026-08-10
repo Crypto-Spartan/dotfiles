@@ -1,5 +1,6 @@
 return {
     'nvim-treesitter/nvim-treesitter',
+    enabled = false,
     branch = 'master',
     build = ':TSUpdate',
     event = { 'LazyFileOpen', 'LazyOilPreview', 'LazyTelescopePreview', 'BufNewFile' },
