@@ -128,11 +128,54 @@ return {
                 -- vim.print = _G.dbg -- Override print to use snacks for `:=` command
 
                 -- Toggle line numbers
-                Snacks.toggle.line_number():map('<leader>tl')
+                -- Snacks.toggle.line_number():map('<leader>tl')
                 -- toggle the profiler
                 Snacks.toggle.profiler():map('<leader>tpp')
                 -- toggle the profiler highlights
                 Snacks.toggle.profiler_highlights():map('<leader>tph')
+
+                local setup_toggle_gutter = function()
+                    local saved_statuscolumn = vim.o.statuscolumn
+                    local saved_signcolumn = vim.o.signcolumn
+                    local saved_number = vim.o.number
+                    local saved_relativenumber = vim.o.relativenumber
+                    local saved_foldcolumn = vim.o.foldcolumn
+                    local gutter_enabled = true
+
+                    local toggle_opts = {
+                        id = 'gutter',
+                        name = 'Gutter',
+                        get = function()
+                            return gutter_enabled
+                        end,
+                        set = function(state)
+                            if state then
+                                vim.o.statuscolumn = saved_statuscolumn
+                                vim.o.signcolumn = saved_signcolumn
+                                vim.o.number = saved_number
+                                vim.o.relativenumber = saved_relativenumber
+                                vim.o.foldcolumn = saved_foldcolumn
+                                gutter_enabled = true
+                            else
+                                saved_statuscolumn = vim.o.statuscolumn
+                                saved_signcolumn = vim.o.signcolumn
+                                saved_number = vim.o.number
+                                saved_relativenumber = vim.o.relativenumber
+                                saved_foldcolumn = vim.o.foldcolumn
+
+                                vim.o.statuscolumn = ''
+                                vim.o.signcolumn = 'no'
+                                vim.o.number = false
+                                vim.o.relativenumber = false
+                                vim.o.foldcolumn = '0'
+                                    
+                                gutter_enabled = false
+                            end
+                        end
+                    }
+                    Snacks.toggle.new(toggle_opts):map('<leader>tg')
+                end
+                setup_toggle_gutter()
 
                 -- Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')
                 -- Snacks.toggle.line_number():map('<leader>ul')
