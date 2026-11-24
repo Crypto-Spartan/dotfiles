@@ -1,6 +1,5 @@
 return {
     'nvim-treesitter/nvim-treesitter-context',
-    enabled = false,
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     event = { 'LazyFileOpen', 'BufNewFile' },
     ft = { 'scm' },
@@ -20,7 +19,7 @@ return {
                 get = pkg_tscontext.enabled,
                 set = pkg_tscontext.toggle,
             }
-            package.loaded.snacks.toggle.new(toggle_opts):map('<leader>tc')
+            package.loaded.snacks.toggle.new(toggle_opts):map('<leader>tC')
         end)
     end
 }
