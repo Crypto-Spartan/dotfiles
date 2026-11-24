@@ -19,6 +19,9 @@ export HISTFILE=~/.zsh_history
 # Path to your Oh My Zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+# remove duplicate PATH entries
+#export PATH="$(echo "$PATH" | tr ':' '\n' | awk '!seen[$0]++' | paste -s -d ':')"
+
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
