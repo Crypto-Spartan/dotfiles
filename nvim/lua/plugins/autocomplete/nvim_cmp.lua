@@ -1,5 +1,6 @@
 return {
     'hrsh7th/nvim-cmp',
+    enabled = false,
     event = { 'BufEnter' },
     dependencies = {
         'L3MON4D3/LuaSnip',                -- snippet engine
