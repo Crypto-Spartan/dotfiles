@@ -1,3 +1,24 @@
+local function treesitter_try_attach(buf, lang)
+    -- check if a parser exists and load it
+    if not vim.treesitter.language.add(lang) then return end
+    -- check if the buffer is valid (might not be after install completes)
+    if not vim.api.nvim_buf_is_valid(buf) then return end
+
+    vim.treesitter.start(buf, lang)
+
+    -- enable treesitter based folds
+    -- for more info on folds see `:help folds`
+    -- vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+    -- vim.wo.foldmethod = 'expr'
+
+    -- check if treesitter indentation is available for this language, and if so, enable it
+    -- in case there is no indent query, the indentexpr will fallback to vim's builtin one
+    local has_indent_query = vim.treesitter.query.get(lang, 'indents') ~= nil
+
+    -- enable treesitter based indentation
+    if has_indent_query then vim.bo.indentexpr = "v:lua.require('nvim-treesitter').indentexpr()" end
+end
+
 return {
     'nvim-treesitter/nvim-treesitter',
     enabled = false,
