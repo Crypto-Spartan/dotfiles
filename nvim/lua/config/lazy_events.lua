@@ -1,5 +1,5 @@
 vim.g.lazyfileopen_triggered = false
-vim.g.lazytelescopepreview = false
+vim.g.lazytelescopepreview_triggered = false
 
 -- must be loaded before require('lazy').setup() since this plugin has to execute some logic before other plugin specs are loaded
 vim.g.lazy_events_config = {
@@ -59,16 +59,16 @@ vim.g.lazy_events_config = {
             event = 'FileType',
             cond = function(event)
                 -- if vim.g.lazyfileopen_triggered or vim.fn.buflisted(event.buf) == 0 then
-                if vim.g.lazytelescopepreview then
+                if vim.g.lazytelescopepreview_triggered then
                     return false
                 end
 
                 local filetype = event.match
                 if vim.startswith(filetype, 'Telescope') then
-                    vim.g.lazytelescopepreview = true
+                    vim.g.lazytelescopepreview_triggered = true
                     vim.schedule(function()
                         vim.api.nvim_del_autocmd(event.id)
-                        vim.g.lazytelescopepreview = nil
+                        vim.g.lazytelescopepreview_triggered = nil
                     end)
                     return true
                 else
