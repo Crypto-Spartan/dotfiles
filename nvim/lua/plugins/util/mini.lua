@@ -130,7 +130,7 @@ local function get_filesize_oil(trunc_width, timeout)
             end
 
             local str_joined
-            if non_empty_strs:len() > 0 then
+            if not vim.tbl_isempty(non_empty_strs) then
                 str_joined = vim.custom_fn.string_join(non_empty_strs, ', ')
             else
                 str_joined = 'empty'
@@ -186,7 +186,7 @@ local function get_mini_filesize_str_coop(trunc_width)
     local buf_name = vim.api.nvim_buf_get_name(0)
     local timeout = 15
     -- local buf_info = vim.fn.getbufinfo(0)
-    -- if buf_info:len() > 0 then
+    -- if #buf_info > 0 then
     --     buf_info = buf_info[1]
     --     if buf_info.name ~= buf_name then
     --         timeout = 30
@@ -196,7 +196,7 @@ local function get_mini_filesize_str_coop(trunc_width)
     local coop = package.loaded.coop
     if buf_name:sub(1, 4) == 'oil:' then
         return coop.spawn(get_filesize_oil, trunc_width, timeout):await(250, 50)
-    elseif buf_name:len() > 0 and buf_name:sub(-1) ~= '/' then
+    elseif #buf_name > 0 and buf_name:sub(-1) ~= '/' then
         local cache_entry = filesize_cache[buf_name]
         if cache_entry ~= nil then
             if not cache_entry.pending then
@@ -206,7 +206,7 @@ local function get_mini_filesize_str_coop(trunc_width)
             filesize_cache[buf_name] = { pending = true }
             local get_filesize_deferred = function()
                 local filesize_str = coop.spawn(get_filesize_str_coop, buf_name):await(500, 50)
-                if filesize_str ~= nil and filesize_str:len() > 0 then
+                if filesize_str ~= nil and #filesize_str > 0 then
                     filesize_cache[buf_name] = {
                         pending = false,
                         filesize_str = filesize_str,
