@@ -5,7 +5,12 @@
 # If not running interactively, don't do anything
 [[ $- != *i* ]] && return
 
-PS1='[\u@\h \W]\$ '
+if [[ -r ~/.bash_prompt ]];
+    source ~/.bash_prompt
+else
+    PS1='[\u@\h \W]\$ '
+fi
+
 
 # relative path links
 ln -sf .dotfiles/.bash_logout
