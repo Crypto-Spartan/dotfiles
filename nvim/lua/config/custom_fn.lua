@@ -91,29 +91,45 @@ CF.get_dir_info = function(dirpath)
     return total_bytes, total_filecount, total_dircount
 end
 
-CF.get_dirsize_str = function(dirpath)
-    vim.validate('dirpath', dirpath, 'string')
-    return CF.format_bytes(CF.get_dirsize(dirpath))
-end
-
-CF.trim_oil_path = function(path)
-    if vim.startswith(path, 'oil://') then
-        path = path:sub(7)
-    end
-    return path
-end
-
 CF.get_parent_dir = function(path)
     vim.validate('path', path, 'string')
-    return vim.fn.fnamemodify(path, ':p:h')
+    return vim.fs.dirname(vim.fs.abspath(path))
 end
 
 CF.get_nvim_cwd = function()
-    return CF.get_parent_dir(CF.trim_oil_path(vim.fn.getcwd()))
+    return CF.get_parent_dir(vim.fn.getcwd())
 end
 
-CF.get_buf_cwd = function()
-    return CF.get_parent_dir(CF.trim_oil_path(vim.api.nvim_buf_get_name(0)))
+CF.get_buf_cwd = function(bufnr)
+    bufnr = bufnr or 0
+    local path = vim.api.nvim_buf_get_name(bufnr)
+
+    if path == '' then
+        return vim.fn.getcwd()
+    end
+
+    if vim.startswith(path, 'oil://') then
+        local oil_path = path:sub(7)
+        if vim.fn.isdirectory(oil_path) == 1 then
+            return vim.fs.abspath(oil_path)
+        else
+            vim.notify('CF.get_buf_cwd: `oil_path` not a directory', vim.log.levels.WARN)
+            return vim.fn.getcwd()
+        end
+    end
+
+    if vim.fn.isdirectory(path) == 1 then
+        return vim.fs.abspath(path)
+    end
+
+    -- handle buffers that aren't files - terminal, quickfix, prompt, nofile, etc
+    local buftype = vim.bo[bufnr].buftype
+    if buftype ~= '' then
+        vim.notify(('CF.get_buf_cwd(): buftype == `%s`'):format(buftype), vim.log.levels.WARN)
+        return vim.fn.getcwd()
+    end
+
+    return CF.get_parent_dir(path)
 end
 
 -- numbers ---------------------------------------------------------------------
@@ -248,17 +264,19 @@ CF.get_visual_selection_text = function()
 
     -- visual block mode
     if mode == '\22' then
-        local lines = {}
         if srow > erow then
             srow, erow = erow, srow
         end
         if scol > ecol then
             scol, ecol = ecol, scol
         end
+
+        local lines = {}
         for i = srow, erow do
             local i_minus_1 = i - 1
             local scol_minus_1 = scol - 1
-            lines:insert(
+            table.insert(
+                lines,
                 vim.api.nvim_buf_get_text(0, i_minus_1, math.min(scol_minus_1, ecol), i_minus_1, math.max(scol_minus_1, ecol), {})[1]
             )
         end
