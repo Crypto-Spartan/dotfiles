@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+
+prompt_git() {
+    local s=''
+    local branch_name=''
+
+    # check if current dir is in a git repo
+    git rev-parse --is-inside-work-tree >/dev/null 2>&1 || return
+
+    # check which branch we're on
+    # get the short symbolic ref. if HEAD isn't a symbolic ref, get a tracking remote branch or tag
+    # otherwise, get the short SHA for latest commit, or give up
+    branch_name="$(git symbolic-ref --quiet --short HEAD 2> /dev/null || \
+        git describe --all --exact-match HEAD 2> /dev/null || \
+        git rev-parse --short HEAD 2> /dev/null || \
+        echo '(unknown)')"
+
+    # early exit for chromium repo, as the dirty check takes too long
+    # https://github.com/paulirish/dotfiles/blob/dd33151f/.bash_prompt#L110-L123
+    repo_url="$(git config --get remote.origin.url)"
+    if grep -q 'chromium/src.git' <<< "${repo_url}"; then
+        s+='*';
+    else
+        # check for uncommitted changes in the index
+        if ! $(git diff --quiet --ignore-submodules --cached); then
+            s+='+';
+        fi;
+
+        # check for unstaged changes
+        if ! $(git diff-files --quiet --ignore-submodules --); then
+            s+='!';
+        fi;
+
+        # check for untracked files
+        if [[ -n "$(git ls-files --others --exclude-standard)" ]]; then
+            s+='?';
+        fi;
+
+        # check for stashed files
+        if $(git rev-parse --verify refs/stash >/dev/null 2>&1); then
+            s+='$';
+        fi;
+    fi;
+
+    [ -n "${s}" ] && s=" [${s}]"
+
+    echo -e "${1}${branch_name}${s}${2}"
+}
+
+white="\e[0m"
+green="\e[38;5;41m"
+blue="\e[38;5;39m"
+red="\e[91m"
+orchid="\e[38;5;213m"
+gold="\e[38;5;220m"
+
+# highlight the user name when root
+if [[ "${USER}" == 'root' ]]; then
+    user_style="${red}";
+else
+    user_style="${orchid}";
+fi;
+
+#PS1='\A ';  # time, 24h format
+PS1="\[${user_style}\]\u";  # username
+PS1+="\[${white}\]@";  # `@`
+PS1+="\[${blue}\]\H";  # hostname
+PS1+="\[${white}\]:";  # `:`
+PS1+="\[${green}\]\w\[${white}\]";  # working directory full path
+PS1+="\$(prompt_git \"\[${white}\](\[${gold}\]\" \"\[${white}\])\")";  # git repo details
+PS1+="\n";  # newline
+Ps1+="\[${white}\]> ";  # prompt - `>`
+export PS1
