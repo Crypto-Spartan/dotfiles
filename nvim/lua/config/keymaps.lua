@@ -113,9 +113,23 @@ nnoremap('<leader>pO', [[O<C-r>"<esc>]], { desc = 'Paste on line above with corr
 -- search & replace word under cursor (similar to LSP rename but without LSP)
 nnoremap('<leader>r', [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/g<Left><Left>]], { desc = 'Search & Replace word under cursor in current buffer' })
 local left_key = vim.api.nvim_replace_termcodes('<left>', true, false, true)
+local sed_separators = {'/', '@', '_', '!', '#', '%', ',', ':', ';'}
 local function vmode_search_and_replace()
-    local selection = custom_fn.get_visual_selection_text()[1]
-    local cmd = esc_key..':%s/'..selection..'/'..selection..'/g'..left_key:rep(2)
+    local selection_raw = custom_fn.get_visual_selection_text()[1]
+    local selection_esc = selection_raw:gsub('[%.%*%[%]%^%$~]', '\\%1')
+    local sep
+    local broke_loop = false
+    for _, check_sep in ipairs(sed_separators) do
+        if not custom_fn.string_contains(selection_esc, check_sep) then
+            sep = check_sep
+            broke_loop = true
+            break
+        end
+    end
+    if not broke_loop then
+        sep = '/'
+    end
+    local cmd = esc_key..':%s'..sep..selection_esc..sep..selection_raw..sep..'g'..left_key:rep(2)
     vim.api.nvim_feedkeys(cmd, 'n', false)
 end
 vnoremap('<leader>r', vmode_search_and_replace, { desc = 'Search & Replace visual selection in current buffer' })
@@ -149,7 +163,7 @@ vim.keymap.set('n', 'yc', 'yygccp', { desc = 'duplicate line & comment out first
 nnoremap('gy', "`[v`]", { desc = 'Select recently pasted, yanked, or changed text' })
 
 local function insert_timestamp()
-    local timestamp_str = ('%s UTC -- '):format(os.date('!%Y-%m-%d %H:%M:%S'))
+    local timestamp_str = ('%s UTC'):format(os.date('!%Y-%m-%d %H:%M:%S'))
     vim.api.nvim_put({timestamp_str}, 'c', true, true)
 end
 vim.keymap.set({'n','i','v','x'}, '<F5>', insert_timestamp, { desc = 'Insert Timestamp', nowait = true })
