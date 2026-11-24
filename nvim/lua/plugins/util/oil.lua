@@ -23,10 +23,12 @@ return {
     opts = {
         default_file_explorer = true,
         keymaps = {
+            ['<leader>l'] = { 'actions.refresh' },
             ['<bs>'] = 'actions.parent',
             ['<C-c>'] = { '<nop>', desc = 'Same as <esc>' },
             ['<C-s>'] = { vim.cmd.write, desc = 'Save the buffer' },
             ['<C-h>'] = { '<C-w><C-h>', desc = 'Move focus to the left window' },
+            ['<C-l>'] = { '<C-w><C-l>', desc = 'Move focus to the right window' },
             ['<C-v>'] = { 'actions.select', opts = { vertical = true } },
             ['<C-w>'] = { 'actions.select', opts = { horizontal = true } },
             ['<C-p>'] = {
