@@ -1,53 +1,59 @@
 #!/usr/bin/env bash
 
-export EXA_COLORS='da=38;5;213'
+if command -v eza >/dev/null 2>&1; then
+    export EXA_COLORS='da=38;5;213'
 
-alias ls='eza --color=always'
-alias ll='el'       # all files in long format
-alias la='ela'      # all files in long format, excluding . & ..
-
-# -a: all files
-# -h: add header row
-# -l: long format
-# -m: use the modified timestamp field
-# -F: file-type indicators (i.e. directory/, executable*)
-# -G: grid format
-# -H: show # of hard links
-# -T: tree format
-# -L: limit depths of recursion
-alias el='eza -hlm -F --color=always'
-alias ela='eza -ahlm -F --color=always'
-alias et='eza -hlmT -F -L 2 --color=always'
-alias eta='eza -ahlmT -F -L 2 --color=always --ignore-glob=".git|.memestra"'
-alias eza='eza -m'
-
-alias bathelp='bat --plain --language=help'
-
-batman() {
-    man "$@" | bat --plain --language=man
-}
-alias bman='batman'
-
-# allows `help cp` or `help git commit`
-help() {
-    "$@" --help 2>&1 | bathelp
-}
-# adds zsh global alias for `--help`
-if [[ -n "$(ps -p $$ | sed -n '/\szsh$/p')" ]]; then
-    alias -g -- --help='--help 2>&1 | bat --plain --language=help'
+    alias ls='eza --color=always'
+    alias ll='el'       # all files in long format
+    alias la='ela'      # all files in long format, excluding . & ..
+    
+    # -a: all files
+    # -h: add header row
+    # -l: long format
+    # -m: use the modified timestamp field
+    # -F: file-type indicators (i.e. directory/, executable*)
+    # -G: grid format
+    # -H: show # of hard links
+    # -T: tree format
+    # -L: limit depths of recursion
+    alias el='eza -hlm -F --color=always'
+    alias ela='eza -ahlm -F --color=always'
+    alias et='eza -hlmT -F -L 2 --color=always'
+    alias eta='eza -ahlmT -F -L 2 --color=always --ignore-glob=".git|.memestra"'
+    alias eza='eza -m'
 fi
 
-alias pacman='sudo pacman'
-# pacman uninstall
-# -R: remove
-# -u: unneeded - removes pkgs that aren't required by any other pkgs
-# -n: nosave - ignore file backup designations; don't rename to a *.pacsave file
-# -s: recursive - remove dependencies, provided they aren't required by other pkgs & they weren't explicitly installed by the user
-alias pcrm='pacman -Runs'
-# pacman install
-alias pci='pacman -S'
-# pacman update
-alias pcup='pacman -Syu'
+if command -v bat >/dev/null 2>&1; then
+    alias bathelp='bat --plain --language=help'
+    
+    batman() {
+        man "$@" | bat --plain --language=man
+    }
+    alias bman='batman'
+    
+    # allows `help cp` or `help git commit`
+    help() {
+        "$@" --help 2>&1 | bathelp
+    }
+    # adds zsh global alias for `--help`
+    if [[ -n "$(ps -p $$ | sed -n '/\szsh$/p')" ]]; then
+        alias -g -- --help='--help 2>&1 | bat --plain --language=help'
+    fi
+fi
+
+if command -v pacman >/dev/null 2>&1; then
+    alias pacman='sudo pacman'
+    # pacman uninstall
+    # -R: remove
+    # -u: unneeded - removes pkgs that aren't required by any other pkgs
+    # -n: nosave - ignore file backup designations; don't rename to a *.pacsave file
+    # -s: recursive - remove dependencies, provided they aren't required by other pkgs & they weren't explicitly installed by the user
+    alias pcrm='pacman -Runs'
+    # pacman install
+    alias pci='pacman -S'
+    # pacman update
+    alias pcup='pacman -Syu'
+fi
 
 # aliases for git
 alias gs='git status'
@@ -60,8 +66,10 @@ alias gpush='git push'
 alias gundo='git reset HEAD~'  # "git undo"
 alias lg='lazygit'
 
-alias cd='z'
-alias -- -='z -'
+if command -v zoxide >/dev/null 2>&1; then
+    alias cd='z'
+    alias -- -='z -'
+fi
 
 # use bat instead of less
 #alias less="BAT_PAGER='less -RM +Gg' bat"
@@ -78,8 +86,6 @@ alias nivm='nvim'
 #alias nsl='while true; do nvim . --headless --listen localhost:<PORT>; done'
 # 'netcat listen'
 alias ncl='nc -lkU /tmp/log.sock'
-
-alias curl='curl --parallel --parallel-immediate'
 
 # enable aliases to be sudo'ed
 alias sudo='sudo '
