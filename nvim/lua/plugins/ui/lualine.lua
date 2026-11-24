@@ -1,7 +1,4 @@
 local function get_buf_count()
-    -- local listed_bufs = vim.fn.getbufinfo({'buflisted'})
-    -- local loaded_bufs = vim.fn.getbufinfo( 'bufloaded' )
-
     local listed_bufs = vim.api.nvim_list_bufs()
     local buf_count = 0
     local oil_count = 0
@@ -33,7 +30,6 @@ local function get_buf_count()
         end
     end
 
-    -- result = 'Buffers: ' .. buf_count
     local result
     if buf_count == 0 and oil_count > 0 then
         result = 'Oil Buffers: ' .. oil_count
@@ -45,31 +41,6 @@ local function get_buf_count()
 
     -- print(result)
     return result
-    -- print(count)
-    -- return count
-
-    -- print(#listed_bufs)
-    -- return #listed_bufs
-    -- print(dump(loaded_bufs))
-
-    -- local hash = {}
-    -- local result = {}
-    --
-    -- for _,v in ipairs(listed_bufs) do
-    --     if (not hash[v]) then
-    --         result[#result+1] = v
-    --         hash[v] = true
-    --     end
-    -- end
-    --
-    -- for _,v in ipairs(loaded_bufs) do
-    --     if (not hash[v]) then
-    --         result[#result+1] = v
-    --         hash[v] = true
-    --     end
-    -- end
-    --
-    -- return len(result)
 end
 
 local filename = {
