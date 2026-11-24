@@ -52,4 +52,4 @@ exit_session() {
     . "$HOME/.bash_logout"
 }
 trap exit_session EXIT SIGHUP SIGQUIT SIGABRT SIGKILL SIGALRM SIGTERM
-command -v zoxide 2&>1 > /dev/null && eval "$(zoxide init bash)"
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init bash)"
