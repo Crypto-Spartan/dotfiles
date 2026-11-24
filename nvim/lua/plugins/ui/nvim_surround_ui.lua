@@ -6,11 +6,6 @@ return {
         'folke/which-key.nvim',
     },
     event = { 'LazyFileOpen', 'BufNewFile' },
-    -- config = function()
-    --     require('surround-ui').setup({
-    --         root_key = 'S'
-    --     })
-    -- end,
     opts = {
         root_key = 'S'
     }
