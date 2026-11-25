@@ -30,6 +30,9 @@ set tabstop=4
 " Use space characters instead of tabs
 set expandtab
 
+" save undo history to a file
+set undofile
+
 " prompted to save/cancel if you quit without saving
 set confirm
 
