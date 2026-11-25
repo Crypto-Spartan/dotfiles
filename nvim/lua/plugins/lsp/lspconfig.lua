@@ -12,7 +12,7 @@ return {
     },
     init = function()
         vim.notify('Neovim version older than v0.11.2, loading with lspconfig', vim.log.levels.WARN)
-        
+
         -- delete keymaps that conflict with 'gr*' & 'gO'
         vim.keymap.del({'n','x'}, 'gra')    -- vim.lsp.buf.code_action()
         vim.keymap.del('n', 'gri')          -- vim.lsp.buf.implementation()
@@ -181,7 +181,7 @@ return {
                 source = 'if_many'
             }
         })
-        
+
     end,
     config = function()
         local lspconfig = require('lspconfig')

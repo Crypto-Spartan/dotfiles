@@ -168,7 +168,7 @@ return {
                                 vim.o.number = false
                                 vim.o.relativenumber = false
                                 vim.o.foldcolumn = '0'
-                                    
+
                                 gutter_enabled = false
                             end
                         end
