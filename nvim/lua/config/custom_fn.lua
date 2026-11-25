@@ -113,7 +113,7 @@ CF.get_buf_cwd = function(bufnr)
         if vim.fn.isdirectory(oil_path) == 1 then
             return vim.fs.abspath(oil_path)
         else
-            vim.notify('CF.get_buf_cwd: `oil_path` not a directory', vim.log.levels.WARN)
+            vim.notify('CF.get_buf_cwd(): `oil_path` not a directory', vim.log.levels.WARN)
             return vim.fn.getcwd()
         end
     end
