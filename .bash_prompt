@@ -69,5 +69,5 @@ PS1+="\[${white}\]:";  # `:`
 PS1+="\[${green}\]\w\[${white}\]";  # working directory full path
 PS1+="\$(prompt_git \"\[${white}\](\[${gold}\]\" \"\[${white}\])\")";  # git repo details
 PS1+="\n";  # newline
-Ps1+="\[${white}\]> ";  # prompt - `>`
+PS1+="\[${white}\]> ";  # prompt - `>`
 export PS1
