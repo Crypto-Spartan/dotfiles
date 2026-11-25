@@ -11,6 +11,9 @@ else
     PS1='[\u@\h \W]\$ '
 fi
 
+# append to bash history file, rather than overwriting it
+shopt -s histappend;
+
 
 # relative path links
 ln -sf .dotfiles/.bash_logout
@@ -32,6 +35,9 @@ for file in ~/.dotfiles/.{aliases,exports,}; do
     [[ -r "$file" ]] && [[ -f "$file" ]] && source "$file"
 done
 unset file
+
+# add tab completion for SSH hostnames based on ~/.ssh/config, ignoring wildcards
+[[ -r "$HOME"/.ssh/config ]] && complete -o 'default' -o 'nospace' -W "$(grep '^Host' ~/.ssh/config | grep -v '[?*]' | cut -d ' ' -f2- | tr ' ' '\n')" scp sftp ssh
 
 # dedup PATH
 # also put unix paths before windows paths, but keep relative order
