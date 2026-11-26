@@ -1,4 +1,4 @@
-local luals_config = {
+local pylsp_config = {
     cmd = { 'pylsp' },
     filetypes = { 'python' },
     root_markers = {
